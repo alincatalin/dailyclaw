@@ -1,0 +1,37 @@
+.pullQuote {
+  margin: 2rem -1rem;
+  padding: 2rem;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.pullQuote::before {
+  content: '\201C';
+  font-family: var(--font-serif), serif;
+  font-size: 8rem;
+  color: var(--border);
+  position: absolute;
+  top: -1rem;
+  left: 1rem;
+  line-height: 1;
+}
+
+.text {
+  font-family: var(--font-serif), serif;
+  font-size: 1.5rem;
+  line-height: 1.4;
+  color: var(--text);
+  font-style: italic;
+  padding-left: 2rem;
+}
+
+.attrib {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 1rem;
+  padding-left: 2rem;
+  font-style: normal;
+}

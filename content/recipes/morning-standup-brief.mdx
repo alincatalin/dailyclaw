@@ -1,0 +1,60 @@
+---
+title: "Morning Standup Brief"
+slug: "morning-standup-brief"
+category: "Automation"
+steps: 5
+setupTime: "30 min"
+timeSaved: "~3h"
+difficulty: "Intermediate"
+tools: ["Linear MCP", "GitHub MCP", "Obsidian MCP", "Cron"]
+contributor: "Alin Postolache"
+contributorSlug: "alin-postolache"
+---
+
+<StepCard number={1} label="Prerequisites" heading="Install and configure your MCP servers">
+
+You need three MCP servers running: **Linear**, **GitHub**, and **Obsidian**. Each needs an API key. Add them to your Claude Code config file.
+
+Get your Linear API key from Linear → Settings → API → Personal API keys. Get a GitHub personal access token from GitHub → Settings → Developer settings → Personal access tokens. For Obsidian, you just need the path to your local vault.
+
+Test each server independently first with `claude --mcp-debug` to confirm all tools are available before continuing.
+
+</StepCard>
+
+<StepCard number={2} label="The prompt" heading="Write your standup prompt file">
+
+Save this as `standup.md` in your project. This is the instruction set your agent runs every morning. Customize the team name and vault path for your setup.
+
+The prompt should instruct the agent to: (1) fetch all Linear issues updated in the last 24 hours, (2) list open PRs and their review status, (3) read your Obsidian daily note, (4) synthesize everything into sections: Blockers, In Progress, Needs Review, Today's Focus.
+
+Add a line at the end: "If you cannot find data from any source, say so explicitly — never hallucinate." This keeps the output honest.
+
+</StepCard>
+
+<StepCard number={3} label="The runner script" heading="Create the shell script that runs it">
+
+Create a shell script that kicks off the agent session, captures the output, and pipes it to your email. You can use `msmtp`, `sendmail`, the Mailgun API, or even a Slack webhook. The output is just plain text — pipe it wherever you want.
+
+The script should run Claude with your MCP config, the prompt file, and `--no-interactive` mode. Capture the output to a variable, then format it as an email with a subject line like "Standup 2025-02-22" and send it.
+
+</StepCard>
+
+<StepCard number={4} label="Schedule it" heading="Set up your cron job">
+
+Run `crontab -e` and add a line to trigger the script at 8am every weekday: `0 8 * * 1-5 /bin/bash ~/agents/standup.sh`
+
+Make sure the script is executable first with `chmod +x ~/agents/standup.sh`.
+
+On Mac, use launchd instead of cron for more reliable scheduling. Or run it via a GitHub Action if you want it cloud-hosted.
+
+</StepCard>
+
+<StepCard number={5} label="Refine & extend" heading="Tune the prompt until it's yours">
+
+Run the script manually first and see what you get. The output will likely be slightly too verbose or miss context you care about. Edit the prompt until it's perfect — this is where the real value is.
+
+Common extensions: add **Stripe MCP** to include yesterday's revenue and failed payments. Add **Slack MCP** to surface urgent mentions you missed. Create a "FLAG:" system in Obsidian where anything tagged gets surfaced first in the brief.
+
+The goal is a single email you can read in under 2 minutes that tells you exactly where things stand. No dashboards. No context switching.
+
+</StepCard>

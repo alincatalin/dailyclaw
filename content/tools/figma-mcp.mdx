@@ -1,0 +1,30 @@
+---
+title: "Figma MCP Server"
+slug: "figma-mcp"
+icon: "🎨"
+category: "Design"
+type: "MCP Server"
+license: "Open Source · MIT"
+installCmd: "npx @anthropic/mcp-server-figma"
+description: "Bridge the gap between design and code. Read Figma files, extract design tokens, inspect components, and generate code from designs."
+makers: 8
+capabilities: ["Read files", "Extract tokens", "Component inspection", "Style extraction", "Asset export", "Design search"]
+version: "v1.0"
+compatibility:
+  - name: "Claude Code"
+    status: "ok"
+  - name: "Claude Desktop"
+    status: "ok"
+  - name: "Cursor"
+    status: "ok"
+  - name: "Windsurf"
+    status: "no"
+  - name: "Zed"
+    status: "no"
+---
+
+The Figma MCP Server lets your AI agent read Figma files, extract design tokens, inspect component structures, and pull style information directly into your development workflow. Instead of manually translating a design into code — eyeballing spacing, copying hex values, and guessing at font weights — your agent reads the source file and generates accurate implementations. It is the fastest way to close the gap between what a designer hands off and what ships in production.
+
+To set up, generate a personal access token in Figma under **Settings > Account > Personal access tokens**. Add the server to your MCP config and set the `FIGMA_API_KEY` environment variable. Run `npx @anthropic/mcp-server-figma` to confirm it connects. You will need the file key from any Figma URL (the string after `/file/` in the URL) to point the agent at specific designs. Note that Windsurf and Zed are not currently supported.
+
+Prompts that designers and frontend developers use: "Open the Figma file for the dashboard redesign and extract all the color tokens, font sizes, and spacing values as CSS custom properties." Or "Inspect the card component in this Figma file and generate a React component with Tailwind classes that matches the design." For design system work: "Compare the button styles in our Figma file against our current button component and list every discrepancy in padding, border-radius, and color." The server reads the Figma document tree, so it understands layers, groups, auto-layout properties, and component variants.

@@ -1,0 +1,55 @@
+.codeBlock {
+  background: #080808;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent3);
+  padding: 1.25rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  line-height: 1.9;
+  overflow-x: auto;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 9px;
+  background: var(--accent3);
+  color: #000;
+  padding: 2px 8px;
+  letter-spacing: 0.1em;
+  font-family: var(--font-mono), monospace;
+}
+
+.pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: var(--text);
+}
+
+.copyBtn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 4px 10px;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.15s;
+}
+
+.copyBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}

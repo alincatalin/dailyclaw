@@ -1,0 +1,44 @@
+---
+title: "Automated Issue Triage"
+slug: "automated-issue-triage"
+category: "Workflow"
+steps: 4
+setupTime: "20 min"
+timeSaved: "~1h"
+difficulty: "Beginner"
+tools: ["GitHub MCP", "Claude Code"]
+contributor: "Alin Postolache"
+contributorSlug: "alin-postolache"
+---
+
+<StepCard number={1} label="Prerequisites" heading="Set up GitHub MCP server">
+
+You need the GitHub MCP server connected with a personal access token that has `repo` scope. Add it to your Claude Code config:
+
+Configure the server with `npx @modelcontextprotocol/server-github` and set your `GITHUB_TOKEN` environment variable. Test it by asking Claude to "list open issues on my repo" — if it returns results, you're good.
+
+</StepCard>
+
+<StepCard number={2} label="The prompt" heading="Write the triage instruction file">
+
+Create a `triage.md` prompt file that instructs the agent to: (1) fetch all issues opened in the last 24 hours on your target repo, (2) for each new issue, search closed issues for similar titles or keywords to check for duplicates, (3) apply labels based on the issue content (bug, feature, question, etc.), (4) draft a first response acknowledging the issue and asking for any missing information.
+
+The key is being specific about your labeling taxonomy. List your exact labels and what criteria should trigger each one. The more specific your instructions, the better the triage quality.
+
+</StepCard>
+
+<StepCard number={3} label="Safety rails" heading="Set up review before posting">
+
+**Important**: Don't let the agent post responses automatically at first. Instead, have it output the drafted responses to a file or send them to you for review.
+
+Once you've reviewed 20-30 triaged issues and the quality is consistently good, you can switch to auto-posting. But start with a human review step. An incorrect auto-response on a public repo is worse than no response.
+
+</StepCard>
+
+<StepCard number={4} label="Schedule & monitor" heading="Run it on a schedule">
+
+Set up a cron job to run the triage script every few hours during business hours. Something like `0 9,12,15,18 * * 1-5` covers the workday nicely.
+
+Monitor the results for the first week. Check that labels are accurate, duplicate detection is working, and drafted responses are helpful. Tweak the prompt based on what you see. After a week of tuning, this should be running silently and saving you an hour a day.
+
+</StepCard>

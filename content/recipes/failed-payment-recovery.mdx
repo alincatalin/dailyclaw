@@ -1,0 +1,42 @@
+---
+title: "Failed Payment Recovery"
+slug: "failed-payment-recovery"
+category: "Automation"
+steps: 3
+setupTime: "25 min"
+timeSaved: "~2h"
+difficulty: "Intermediate"
+tools: ["Stripe MCP", "Gmail MCP", "Claude Code"]
+contributor: "Alin Postolache"
+contributorSlug: "alin-postolache"
+---
+
+<StepCard number={1} label="Prerequisites" heading="Connect Stripe and Gmail MCP servers">
+
+You need two MCP servers: **Stripe MCP** for monitoring payments and **Gmail MCP** for sending recovery emails.
+
+For Stripe, get your API key from the Stripe Dashboard → Developers → API keys. Use your restricted key with read access to charges, customers, and subscriptions. For Gmail, you'll need OAuth credentials — follow the Gmail MCP setup guide to generate your token.
+
+Add both to your Claude Code config and test each independently. Try "list recent failed payments" for Stripe and "list my recent emails" for Gmail to verify both are working.
+
+</StepCard>
+
+<StepCard number={2} label="The workflow" heading="Build the detection and drafting pipeline">
+
+Create a prompt file that instructs the agent to: (1) query Stripe for all failed charges in the last 24 hours, (2) for each failed charge, look up the customer's name, email, subscription plan, and payment history, (3) draft a personalized recovery email that's empathetic, mentions their specific plan, and includes a link to update their payment method.
+
+The personalization is what makes this powerful. A generic "your payment failed" email gets ignored. An email that says "Hey Marcus, your Pro plan payment of $49 didn't go through — looks like your Visa ending in 4242 expired" gets action.
+
+Include a template in your prompt with variables the agent should fill in. Set the tone: helpful, not threatening. You want to recover the payment, not scare the customer away.
+
+</StepCard>
+
+<StepCard number={3} label="Deploy & iterate" heading="Schedule and track recovery rates">
+
+Run this daily via cron, ideally in the morning so customers see the email during business hours. Start by having the agent draft emails for your review rather than sending automatically.
+
+After a week of consistent quality, enable auto-send. Track your recovery rate — most SaaS companies see 20-40% of failed payments recovered with timely, personalized outreach. Compare this to your current recovery rate to measure the impact.
+
+Pro tip: add a follow-up step. If the customer hasn't updated their payment method within 3 days, send a shorter, more urgent follow-up. Two touches typically recover more than one.
+
+</StepCard>

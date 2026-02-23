@@ -1,0 +1,30 @@
+---
+title: "Brave Search MCP"
+slug: "brave-search"
+icon: "🔍"
+category: "Search"
+type: "MCP Server"
+license: "Open Source · MIT"
+installCmd: "npx @modelcontextprotocol/server-brave-search"
+description: "Give your agent real-time web access without hallucinations. Search the web, get current information, and ground responses in facts."
+makers: 18
+capabilities: ["Web search", "News search", "Image search", "Local search", "Result summarization", "URL fetching"]
+version: "v1.5"
+compatibility:
+  - name: "Claude Code"
+    status: "ok"
+  - name: "Claude Desktop"
+    status: "ok"
+  - name: "Cursor"
+    status: "ok"
+  - name: "Windsurf"
+    status: "ok"
+  - name: "Zed"
+    status: "ok"
+---
+
+The Brave Search MCP Server gives your AI agent live access to the web. Whenever your agent needs current information — recent library releases, API documentation, error messages, or news — it can search Brave and pull back real results instead of guessing. This eliminates a whole class of hallucinations around version numbers, API changes, and recent events. It supports web, news, image, and local search out of the box.
+
+To get started, sign up for a Brave Search API key at **brave.com/search/api** — the free tier gives you 2,000 queries per month, which is plenty for individual use. Add the server to your MCP config and set the `BRAVE_API_KEY` environment variable. Run `npx @modelcontextprotocol/server-brave-search` to verify. The server is lightweight and has full compatibility across all major MCP clients, so setup is straightforward regardless of your editor.
+
+Prompts that get the most use: "Search for the latest release notes for Next.js 15 and summarize breaking changes." Or "Look up the current best practice for handling JWT refresh tokens in 2025." It is also handy for debugging: "Search for this error message: 'ECONNREFUSED 127.0.0.1:5432' and tell me the most common fixes." Makers often chain search with other tools — search for documentation, then apply the findings directly to their code in the same conversation.

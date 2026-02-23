@@ -1,0 +1,28 @@
+.breadcrumb {
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.breadcrumb a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: var(--accent);
+}
+
+.sep {
+  color: var(--border);
+  margin: 0 2px;
+}
+
+.current {
+  color: var(--accent);
+}

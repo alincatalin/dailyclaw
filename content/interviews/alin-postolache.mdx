@@ -1,0 +1,360 @@
+---
+title: "Alin Postolache"
+slug: "alin-postolache"
+name: "Alin Postolache"
+handle: "alincatalin"
+role: "Android Engineer · AI Builder"
+location: "Iași, RO"
+date: "Feb 2025"
+number: 1
+tags: ["Multi-Agent", "Orchestration", "Builder"]
+tools: ["OpenClaw", "Convex", "React", "Express", "Claude Sonnet 4.5"]
+pullQuote: "OpenClaw lets me orchestrate a team of specialized AI agents without building complex coordination infrastructure from scratch."
+stats:
+  mcpServers: 0
+  activeAgents: 7
+  savedPerDay: "~8h"
+  automations: 12
+---
+
+<QABlock question="Who are you and what do you build?" id="intro">
+
+I'm Alin Postolache, an Android engineer transitioning into AI-native product development. I'm based in Iași, Romania. Currently building consumer apps (**Heal**, **TWO**) and experimenting heavily with multi-agent systems.
+
+OpenClaw lets me orchestrate a team of specialized AI agents without building complex coordination infrastructure from scratch.
+
+</QABlock>
+
+<QABlock question="What's the ONE workflow that changed how you work?" id="killer-workflow">
+
+**Q-branch Multi-Agent Mission Control.**
+
+Q-branch is a Bond-themed multi-agent task coordination system using Convex as the real-time coordination layer, with agents running as persistent OpenClaw sessions.
+
+Seven specialized agents collaborate on product development:
+
+- **M** (Product Manager) — specs, decisions, roadmaps, reviews
+- **Moneypenny** (Research) — research reports, insights, competitive analysis
+- **Felix** (Engineering) — architecture, technical specs
+- **Tanner** (Lead Engineer / Security) — security-focused architecture, threat modeling
+- **D** (Design) — design rationale, component docs, systems
+- **Bond** (GTM) — messaging, launch plans, marketing copy
+- **Eve** (Revenue) — pricing, monetization, growth experiments
+
+Each agent is a separate OpenClaw session that:
+
+1. Receives heartbeat polls (every ~30min via OpenClaw's cron system)
+2. Queries Convex for assigned tasks (`npx convex run tasksForAgents:listForAgentAndStatus`)
+3. Reads task context + thread messages from Convex
+4. Posts updates via Convex mutations (`messages:create`)
+5. Creates artifacts — durable markdown deliverables stored in git
+6. Registers artifacts in Convex (`tasks:addArtifact`) so they appear on the Documents page
+7. Moves tasks through statuses (`inbox` → `assigned` → `in_progress` → `review` → `done`)
+
+**What triggers it:**
+
+- Heartbeats (OpenClaw cron, every 30min per agent session)
+- Manual wake calls via Express API (`/api/wake-agent`)
+- Direct messages to specific agent sessions
+
+**Tech stack:**
+
+- Convex for real-time task/message coordination
+- Git-backed markdown files for artifact storage
+- OpenClaw sessions for each agent (no MCP servers — just standard OpenClaw file tools + `exec` for Convex CLI)
+- React + Vite UI for task board / documents browser
+- Express backend to read artifacts from filesystem
+
+**Actual heartbeat setup** — each agent has its own OpenClaw session defined in `~/.openclaw/config.json`:
+
+```json
+{
+  "sessions": [
+    {
+      "key": "m-agent",
+      "label": "M",
+      "workspace": "/Users/alin/work/betafocus/q_branch",
+      "heartbeat": {
+        "enabled": true,
+        "intervalMinutes": 30,
+        "prompt": "Check Mission Control. Run: cd /Users/alin/work/betafocus/q_branch && npx convex run tasksForAgents:listForAgentAndStatus '{\"agentId\":\"YOUR_ID\",\"status\":\"in_progress\"}'. Read task threads, post updates, create artifacts when done."
+      }
+    }
+  ]
+}
+```
+
+</QABlock>
+
+<QABlock question="What did this replace? How much time does it save?" id="before-after">
+
+Before: I was the only one doing product thinking, research, design, engineering, and marketing. Context-switching between these modes burned 15–30 minutes each time. Decisions lived in my head or scattered notes.
+
+Now: Each agent maintains persistent context in their domain. M owns product strategy, Moneypenny tracks research, Felix documents architecture. When I need to understand "why did we choose this approach?" I just read the artifact.
+
+**Time saved: ~8–10 hours/week** of context switching. More importantly, zero knowledge loss — every decision, every piece of research, every design rationale is captured as a searchable markdown artifact.
+
+</QABlock>
+
+<QABlock question="How long did it take to build? What was the hardest part?" id="build-time">
+
+Initial setup: ~2 weekends to:
+
+- Wire up Convex schema (tasks, agents, messages, artifacts)
+- Build React UI (task board, documents browser)
+- Create agent sessions in OpenClaw
+- Write the artifact workflow docs
+
+**Hardest part:** Getting the two-step artifact process right. Agents would create markdown files but forget to register them in Convex with `tasks:addArtifact`. The file would exist in git but be invisible to the system — wouldn't show on the Documents page, other agents couldn't discover it.
+
+**Solution:** Created `create-artifact.sh` helper script that reminds you to register after creating the file, and documented it heavily in every agent's README.
+
+</QABlock>
+
+<QABlock question="Walk us through your tool stack." id="tool-stack">
+
+No MCP servers involved. Q-branch uses:
+
+- Standard OpenClaw file tools (read/write for artifacts)
+- `exec` tool to run Convex CLI (`npx convex run <function> '<json>'`)
+- `web_search` for research tasks
+- `sessions_send` for inter-agent communication
+
+**Custom tooling:**
+
+- `create-artifact.sh` — helper script for the two-step artifact creation process
+- Express API (`/api/wake-agent`, `/api/artifact`) for triggering heartbeats and reading files
+
+**Model setup:**
+
+- Primary: `anthropic/claude-sonnet-4-5` for all agents by default
+- Best balance of speed, cost, and reasoning for coordination work. The agents mostly read/write artifacts and post updates — Sonnet handles this perfectly. I upgrade to Opus when M or Tanner need deeper architectural thinking.
+
+**Config snippet:**
+
+```json
+{
+  "model": "anthropic/claude-sonnet-4-5",
+  "sessions": [
+    {
+      "key": "main",
+      "label": "Q",
+      "workspace": "/Users/alin/clawd",
+      "heartbeat": {
+        "enabled": true,
+        "intervalMinutes": 30
+      }
+    },
+    {
+      "key": "m-agent",
+      "label": "M",
+      "workspace": "/Users/alin/work/betafocus/q_branch",
+      "heartbeat": {
+        "enabled": true,
+        "intervalMinutes": 30
+      }
+    },
+    {
+      "key": "moneypenny-agent",
+      "label": "Moneypenny",
+      "workspace": "/Users/alin/work/betafocus/q_branch",
+      "heartbeat": {
+        "enabled": true,
+        "intervalMinutes": 30
+      }
+    }
+  ]
+}
+```
+
+Similar entries for Felix, Bond, Eve, Tanner, and D.
+
+**Custom scripts:**
+
+`create-artifact.sh` — the workflow guardian:
+
+```bash
+#!/bin/bash
+# Usage: ./create-artifact.sh m spec passwordless-auth proj_042
+
+AGENT=$1
+TYPE=$2
+NAME=$3
+TASK_KEY=$4
+
+# Creates file from template
+cp agents/$AGENT/_templates/$TYPE.md agents/$AGENT/$TYPE/$NAME.md
+
+# Reminds you what to do next
+echo "Created: agents/$AGENT/$TYPE/$NAME.md"
+echo ""
+echo "Next steps:"
+echo "1. Edit the file"
+echo "2. Register in Convex: npx convex run tasks:addArtifact '{...}'"
+echo "3. Announce in thread"
+echo "4. Commit to git"
+```
+
+Without this script, agents (and I) would forget step 2 constantly.
+
+</QABlock>
+
+<QABlock question="What does a typical day look like?" id="daily-usage">
+
+- **06:30** — Wake up, check Q (main agent) for overnight updates from the squad
+- **08:00** — Start work; open Q-branch UI to see what M/Bond/Moneypenny worked on
+- **Throughout day** — Agents ping via heartbeats with task updates ("M update: spec complete", "Moneypenny update: research findings ready")
+- **Manual checks** — "M, what's blocking the Heal v1.10 launch?" or "Bond, draft a Reddit post for r/BreakUps"
+- **Evening** — Review artifacts created during the day; agents worked while I was in meetings
+
+**Recent automation I'm proud of:** Heartbeat-driven research pipeline. Set up Moneypenny to automatically check for new tasks tagged `#research`, search the web for competitive intel, draft research reports using the template, register artifacts in Convex, and notify M when research is done so she can incorporate findings into specs. Took ~30 minutes to wire up. Now research happens in the background while I focus on product decisions or code.
+
+</QABlock>
+
+<QABlock question="Heartbeats, cron jobs, and one-shot commands" id="cron-and-persistence">
+
+**Heartbeat-based work** (agents check Mission Control every 30min):
+
+- Task assignment checks (`tasksForAgents:listForAgentAndStatus`)
+- Thread updates (`messages:create`)
+- Artifact creation when work is done
+- Status transitions (`tasks:updateStatus`)
+
+**One-shot commands:**
+
+- Quick questions: "Bond, what's our current messaging for Heal?"
+- File operations: "M, update the Q1 roadmap to prioritize auth"
+- Research queries: "Moneypenny, summarize what we know about competitor pricing"
+
+**When to use each:**
+
+- Persistent agents (heartbeat): Long-running tasks that need context accumulation — building a feature, researching a market, designing a flow
+- One-shot: Tactical questions, quick edits, sanity checks
+
+</QABlock>
+
+<QABlock question="Favorite commands and prompts?" id="favorite-prompts">
+
+**Agent status check:**
+
+```bash
+cd /Users/alin/work/betafocus/q_branch
+npx convex run tasksForAgents:listForAgentAndStatus \
+  '{"agentId":"<M_AGENT_ID>","status":"in_progress"}'
+```
+
+Use when I want to see what M is working on without waiting for a heartbeat.
+
+**Create + assign task:**
+
+```bash
+npx convex run tasks:create '{
+  "title":"Research onboarding flows for habit apps",
+  "description":"Study Duolingo, Headspace, Streaks — document 3 tactics",
+  "assigneeIds":["<MONEYPENNY_ID>"],
+  "status":"assigned",
+  "tags":["research","onboarding"]
+}'
+```
+
+Use when I need Moneypenny to tackle something specific.
+
+**Cross-agent artifact synthesis:**
+
+> "M, review all specs and research from the last 2 weeks. Identify any conflicting decisions or gaps in our roadmap."
+
+Use when doing a weekly sync to ensure agent outputs are coherent across the squad.
+
+</QABlock>
+
+<QABlock question="Killer feature most people don't know about?" id="hidden-feature">
+
+**Git-backed artifact storage + Convex metadata.** The artifacts are just markdown files in a git repo, but Convex tracks metadata (author, date, task, type). This gives you:
+
+- **Version control** — full git history of every decision
+- **Queryability** — Convex lets you filter artifacts by agent, type, task, date
+- **Discoverability** — Documents page shows everything at a glance
+- **Portability** — artifacts outlive the Convex database; they're just markdown
+
+You get the best of both worlds: structured metadata + durable files.
+
+</QABlock>
+
+<QABlock question="Weirdest automation you've built?" id="weirdest">
+
+**Bond-character name generator for new agents.** When I add a new agent to Q-branch, I have a script that:
+
+1. Suggests the next Bond character name (already used: M, Moneypenny, Felix, Bond, Eve, Tanner, D; next could be: Vesper, Silva, etc.)
+2. Picks an emoji icon based on their role
+3. Creates the agent folder structure (`_templates/`, artifact folders)
+4. Registers the agent in Convex
+5. Generates an OpenClaw session config snippet
+
+It's ridiculously over-engineered but I love the theming.
+
+</QABlock>
+
+<QABlock question="What didn't work? What took too long?" id="failures">
+
+**Failed workflow:** Auto-merging agent PRs. I tried letting Felix (engineering agent) autonomously merge his own code after tests passed.
+
+Why it failed: Agents lack context to judge "is this safe to merge in the bigger picture?" Felix would merge code that technically worked but broke product assumptions or introduced scope creep. **I still review all merges.**
+
+**What took too long:** Figuring out heartbeat interval tuning. I started with 10-minute intervals ("more checks = more productivity!") but agents were burning API calls checking for tasks that hadn't changed.
+
+**Lesson:** 30 minutes is the sweet spot. Tasks rarely need sub-30min turnaround, and agents batch multiple checks (tasks + messages + artifact status) into one heartbeat.
+
+**Wish I'd known:** Start with ONE agent. I spun up all seven agents (M, Moneypenny, Felix, Tanner, D, Bond, Eve) at once and the coordination overhead was chaos. They'd duplicate work, contradict each other, or get stuck waiting for another agent's output. Better approach: Build M first (product strategy), get her workflow solid, then add Moneypenny (research), then Felix (engineering), etc. Each agent learns to work with the existing squad before you add the next.
+
+</QABlock>
+
+<QABlock question="What limits have you hit?" id="limits">
+
+- Agents can't propose new agents. I tried; they hallucinate responsibilities that don't make sense.
+- No good conflict resolution. When M wants feature X but D says it's too complex, I still mediate manually.
+- Artifact versioning is manual. No git-style diffs between agent edits — just full file overwrites. I'd love "M suggested these changes to the spec; approve or edit?"
+- Inter-agent communication is clunky. They post in Convex threads but can't directly ping each other's OpenClaw sessions (yet).
+
+</QABlock>
+
+<QABlock question="Advice for someone just starting?" id="advice">
+
+**First workflow to build:** Single "Chief of Staff" agent that checks your email/Slack/GitHub (via heartbeat), summarizes what needs attention, drafts 3 priorities for the day, and posts them to a daily note file. This is 90% of the value with 10% of the complexity. You don't need seven agents orchestrating via Convex to get life-changing productivity.
+
+**Underrated tool:** Convex. Everyone talks about Supabase/Firebase, but Convex's real-time queries + TypeScript functions are perfect for agent coordination. The DX is incredible — no REST boilerplate, no polling, just: `npx convex run functionName '{"arg":"value"}'` and it works.
+
+**Setup tip most people miss:** Give each agent a `SOUL.md` or `IDENTITY.md` file in their workspace. Don't rely only on system prompts — write a persistent identity document that defines their role, their tone (M is strategic, Tanner is paranoid about security, Bond is witty), their responsibilities, and how they work with other agents. Agents stay in character across sessions because the soul file persists.
+
+</QABlock>
+
+<QABlock question="'Automate this' vs 'do it manually' — what's your rule?" id="automate-rule">
+
+**Automate if:**
+
+- You'll do it >3 times (worth scripting)
+- It's error-prone (e.g., forgetting to register artifacts)
+- It creates persistent value (memory logs, tracking docs)
+
+**Manual if:**
+
+- One-off task
+- Requires creative judgment (marketing copy, design critique)
+- The automation would take longer than doing it 10 times manually
+
+</QABlock>
+
+<QABlock question="What's next on your roadmap?" id="whats-next">
+
+**Next workflow:** Competitive intelligence agent (separate from Moneypenny). An agent that monitors Product Hunt, Hacker News, Reddit for apps in my space (breakup recovery, habit tracking), scrapes their landing pages, pricing, reviews, tracks feature releases, maintains a competitive landscape doc, and alerts when a competitor ships something significant. This is basically "Moneypenny but automated and continuous."
+
+**Integration I wish existed:** App Store Connect + Google Play Console MCP server. I want agents to read reviews automatically, track ranking changes, monitor A/B test results, alert on policy warnings, and update ASO artifacts when metadata changes. All the data exists but there's no clean API wrapper for OpenClaw.
+
+**Prediction:** Most solo builders will have 3–5 persistent agents by EOY 2026. Not one "do everything" assistant — specialized agents that own domains (product, research, engineering, marketing, ops). The unlock is durable context (artifacts, memory, state) + good handoffs (agent A's output automatically becomes agent B's input). We're still in the "manual orchestration" phase (I wire Convex, write heartbeat prompts). In 12 months, there will be opinionated frameworks (like Q-branch but as a SaaS) that make this 10x easier. Think "GitHub for AI agent teams."
+
+</QABlock>
+
+<QABlock question="Final thought?" id="final">
+
+The Bond theme isn't just aesthetic — it's functional. Each agent knows their role instantly (M = strategy, Moneypenny = intel, Felix = gadgets, Bond = smooth-talking, Eve = money). When you name things well, coordination gets easier. Clear identities → clear responsibilities → less confusion.
+
+</QABlock>

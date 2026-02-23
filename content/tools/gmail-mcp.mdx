@@ -1,0 +1,30 @@
+---
+title: "Gmail MCP Server"
+slug: "gmail-mcp"
+icon: "✉️"
+category: "Communication"
+type: "MCP Server"
+license: "Open Source · MIT"
+installCmd: "npx @anthropic/mcp-server-gmail"
+description: "Read, send, and triage emails from within your agent workflows. Perfect for automated outreach, support triage, and notification pipelines."
+makers: 9
+capabilities: ["Read emails", "Send emails", "Search inbox", "Label management", "Draft creation", "Thread management"]
+version: "v1.1"
+compatibility:
+  - name: "Claude Code"
+    status: "ok"
+  - name: "Claude Desktop"
+    status: "ok"
+  - name: "Cursor"
+    status: "warn"
+  - name: "Windsurf"
+    status: "no"
+  - name: "Zed"
+    status: "no"
+---
+
+The Gmail MCP Server brings your inbox into your agent's context. You can read, search, send, and organize emails without switching to a browser tab. This is especially useful for support triage — let your agent scan incoming emails, categorize them, draft replies, and flag anything that needs human attention. It also works well for automated outreach and notification pipelines where you want an agent to compose and send messages based on events in other systems.
+
+Setup requires a Google Cloud project with the Gmail API enabled. Go to the **Google Cloud Console**, create OAuth 2.0 credentials (Desktop app type), and download the `credentials.json` file. Place it in a location your MCP server can access and add the server to your config with the path to the credentials file. The first time you run `npx @anthropic/mcp-server-gmail`, it will open a browser window for OAuth consent — authorize it once, and the refresh token handles subsequent sessions automatically.
+
+Example prompts for daily use: "Show me all unread emails from the last 24 hours and summarize each one in a sentence." Or "Draft a reply to the latest email from Sarah about the Q3 roadmap — acknowledge her timeline concerns and suggest a sync next Tuesday." For triage workflows: "Search my inbox for emails containing 'invoice' from the last week, label them 'finance-review', and list the senders." You can also chain it with other tools — read an email about a bug report, then create a Linear issue from its contents.

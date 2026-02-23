@@ -1,0 +1,30 @@
+---
+title: "Notion MCP Server"
+slug: "notion-mcp"
+icon: "🗃️"
+category: "Project Management"
+type: "MCP Server"
+license: "Open Source · MIT"
+installCmd: "npx @anthropic/mcp-server-notion"
+description: "Databases, pages, and docs — read and written by your agents. Perfect for knowledge bases, project wikis, and automated documentation."
+makers: 12
+capabilities: ["Read pages", "Create pages", "Database queries", "Update properties", "Search content", "Block management"]
+version: "v1.3"
+compatibility:
+  - name: "Claude Code"
+    status: "ok"
+  - name: "Claude Desktop"
+    status: "ok"
+  - name: "Cursor"
+    status: "ok"
+  - name: "Windsurf"
+    status: "warn"
+  - name: "Zed"
+    status: "no"
+---
+
+The Notion MCP Server connects your AI agent directly to your Notion workspace. You can read pages, query databases, create new documents, and update properties without ever opening a browser tab. It is particularly useful for teams that treat Notion as their single source of truth — your agent can pull context from specs, update project trackers, and draft documentation pages all within the same conversation where you are writing code.
+
+To set up, create an internal integration at **notion.so/my-integrations** and copy the API token. Share the specific pages or databases you want the agent to access with your integration (Notion requires explicit sharing per page). Then add the server to your MCP config file and set the `NOTION_API_KEY` environment variable to your integration token. Run `npx @anthropic/mcp-server-notion` to confirm it connects. You should be able to query your shared pages immediately.
+
+Prompts that work well in practice: "Find the product roadmap database and list all items with status 'In Progress' for Q1." Or "Create a new page under the Engineering Wiki titled 'Auth Service Architecture' with sections for Overview, API Endpoints, and Database Schema." You can also combine reads and writes: "Look up the onboarding checklist in Notion, then add a new item for setting up MCP tools with a due date of next Friday." The server handles both structured database operations and freeform page content, so it covers most Notion workflows.

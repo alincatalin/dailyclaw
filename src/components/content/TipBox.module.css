@@ -1,0 +1,15 @@
+.tipBox {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  padding: 1rem;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  font-family: var(--font-mono), monospace;
+}
+
+.tipBox strong {
+  color: var(--accent);
+}

@@ -1,0 +1,75 @@
+.stepCard {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.stepCard::after {
+  content: '';
+  position: absolute;
+  left: 31px;
+  top: 64px;
+  bottom: -2rem;
+  width: 1px;
+  background: var(--border);
+}
+
+.stepCard:last-child::after {
+  display: none;
+}
+
+.numCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.num {
+  width: 64px;
+  height: 64px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.8rem;
+  color: var(--accent3);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.stepCard:hover .num {
+  background: var(--accent3);
+  color: #000;
+  border-color: var(--accent3);
+}
+
+.label {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.heading {
+  font-family: var(--font-serif), serif;
+  font-size: 1.3rem;
+  color: var(--text);
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+}
+
+.content {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.content strong {
+  color: var(--text);
+}

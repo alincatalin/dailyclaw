@@ -1,0 +1,56 @@
+.adSlot {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 1rem;
+}
+
+.inline {
+  margin: 2rem 0;
+}
+
+.adLabel {
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  color: var(--border);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.adContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.adPlaceholder {
+  width: 100%;
+  aspect-ratio: 300 / 250;
+  max-height: 200px;
+  border: 1px dashed var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--border);
+}
+
+.adText {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.adLink {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  color: var(--accent4);
+  letter-spacing: 0.1em;
+  transition: opacity 0.15s;
+}
+
+.adLink:hover {
+  opacity: 0.7;
+}

@@ -1,0 +1,30 @@
+---
+title: "GitHub MCP Server"
+slug: "github-mcp"
+icon: "📦"
+category: "Developer Tools"
+type: "MCP Server"
+license: "Open Source · MIT"
+installCmd: "npx @modelcontextprotocol/server-github"
+description: "Full repo control — issues, PRs, code search, file operations, and repository management through natural language."
+makers: 21
+capabilities: ["Issue management", "Pull request control", "Code search", "File operations", "Branch management", "Repository settings"]
+version: "v1.4"
+compatibility:
+  - name: "Claude Code"
+    status: "ok"
+  - name: "Claude Desktop"
+    status: "ok"
+  - name: "Cursor"
+    status: "ok"
+  - name: "Windsurf"
+    status: "ok"
+  - name: "Zed"
+    status: "warn"
+---
+
+The GitHub MCP Server connects your AI agent to the full GitHub API surface. You can open and review pull requests, search code across repos, manage issues, read and write files, and handle branch operations — all through natural language. This is one of the most broadly adopted MCP servers because nearly every developer workflow touches GitHub at some point.
+
+Setup takes about two minutes. Generate a GitHub Personal Access Token (classic or fine-grained) from **Settings > Developer settings > Personal access tokens**. Grant it the scopes you need — `repo` for private repositories, `read:org` for organization data. Add the server to your MCP config with the `GITHUB_PERSONAL_ACCESS_TOKEN` environment variable. Run `npx @modelcontextprotocol/server-github` to confirm it connects. Fine-grained tokens are recommended if you want to limit access to specific repositories.
+
+Useful prompts to try: "Open a PR from my current branch to main with a summary of all commits." Or "Find all open issues labeled 'good first issue' in the frontend repo and list them with their assignees." For code review: "Review the latest PR on acme/api-service — flag any changes to authentication logic and summarize the test coverage." You can also combine it with file operations: "Read the README in our docs repo and update the installation section to reflect the new CLI flags we added."
