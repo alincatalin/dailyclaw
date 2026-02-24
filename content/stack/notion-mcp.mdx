@@ -4,27 +4,127 @@ slug: "notion-mcp"
 icon: "🗃️"
 category: "Project Management"
 type: "MCP Server"
-license: "Open Source · MIT"
-installCmd: "npx @anthropic/mcp-server-notion"
-description: "Databases, pages, and docs — read and written by your agents. Perfect for knowledge bases, project wikis, and automated documentation."
+license: "Notion Official"
+installCmd: "claude mcp add --transport http notion https://mcp.notion.com/mcp"
+description: "Official Notion integration for AI agents. Search, create, update, move, and duplicate pages and databases across your workspace — with OAuth authentication and no infrastructure to manage."
 makers: 12
-capabilities: ["Read pages", "Create pages", "Database queries", "Update properties", "Search content", "Block management"]
-version: "v1.3"
+capabilities: ["Search workspace", "Create & update pages", "Database queries", "Move & duplicate pages", "Comments & discussions", "Team & user data"]
+version: "Latest"
 compatibility:
   - name: "Claude Code"
     status: "ok"
-  - name: "Claude Desktop"
+  - name: "VS Code"
     status: "ok"
   - name: "Cursor"
     status: "ok"
   - name: "Windsurf"
-    status: "warn"
-  - name: "Zed"
-    status: "no"
+    status: "ok"
+  - name: "ChatGPT"
+    status: "ok"
 ---
 
-The Notion MCP Server connects your AI agent directly to your Notion workspace. You can read pages, query databases, create new documents, and update properties without ever opening a browser tab. It is particularly useful for teams that treat Notion as their single source of truth — your agent can pull context from specs, update project trackers, and draft documentation pages all within the same conversation where you are writing code.
+The [Notion MCP Server](https://developers.notion.com/docs/mcp) is Notion's official hosted integration for AI agents. It gives your agent direct read-write access to your entire Notion workspace — pages, databases, comments, and team data. Particularly useful for teams that treat Notion as their single source of truth: pull context from specs, update project trackers, and draft documentation without leaving your coding environment.
 
-To set up, create an internal integration at **notion.so/my-integrations** and copy the API token. Share the specific pages or databases you want the agent to access with your integration (Notion requires explicit sharing per page). Then add the server to your MCP config file and set the `NOTION_API_KEY` environment variable to your integration token. Run `npx @anthropic/mcp-server-notion` to confirm it connects. You should be able to query your shared pages immediately.
+Two connection options:
 
-Prompts that work well in practice: "Find the product roadmap database and list all items with status 'In Progress' for Q1." Or "Create a new page under the Engineering Wiki titled 'Auth Service Architecture' with sections for Overview, API Endpoints, and Database Schema." You can also combine reads and writes: "Look up the onboarding checklist in Notion, then add a new item for setting up MCP tools with a due date of next Friday." The server handles both structured database operations and freeform page content, so it covers most Notion workflows.
+- **Hosted remote server (recommended)** — connects to Notion's endpoint at `mcp.notion.com/mcp` via OAuth. No infrastructure, no API keys to manage.
+- **Open-source self-hosted** — the [`@notionhq/notion-mcp-server`](https://github.com/makenotion/notion-mcp-server) npm package. Uses a Notion integration token. Good for teams that need more control or already have a Notion integration.
+
+What you can do:
+
+- **Search** — find pages, databases, and content across your workspace (plus connected tools like Slack, Google Drive, and Jira with Notion AI)
+- **Pages** — create, read, update, move, and duplicate pages with full markdown content
+- **Databases** — create databases, query views, and manage data sources with filters and sorts
+- **Comments** — add comments to pages or specific blocks, reply to threads, list discussions
+- **Team & users** — look up workspace members, teams, and bot info
+
+### Setup — Claude Code
+
+1. Run `claude mcp add --transport http notion https://mcp.notion.com/mcp`
+2. Start a new Claude Code instance
+3. Use `/mcp` → select notion → Authenticate through browser
+
+Scope options: `--scope local` (default, project-only), `--scope project` (team-shared via `.mcp.json`), `--scope user` (across all projects).
+
+### Setup — Cursor
+
+1. Open **Settings → MCP → Add new global MCP server**
+2. Paste configuration:
+   ```json
+   {
+     "mcpServers": {
+       "notion": {
+         "url": "https://mcp.notion.com/mcp"
+       }
+     }
+   }
+   ```
+3. Save, restart Cursor, and complete the OAuth flow
+
+For team sharing, create `.cursor/mcp.json` in the project root with the same config.
+
+### Setup — VS Code
+
+1. Create `.vscode/mcp.json` in your project:
+   ```json
+   {
+     "servers": {
+       "notion": {
+         "type": "http",
+         "url": "https://mcp.notion.com/mcp"
+       }
+     }
+   }
+   ```
+2. Open Command Palette (Cmd+Shift+P) → "MCP: List Servers"
+3. Start the Notion server and complete OAuth
+
+### Setup — Windsurf
+
+1. Open **Settings** (Cmd+,) → search "MCP" → click **View raw config**
+2. Add to `mcp_config.json`:
+   ```json
+   {
+     "mcpServers": {
+       "notion": {
+         "serverUrl": "https://mcp.notion.com/mcp"
+       }
+     }
+   }
+   ```
+3. Save, restart Windsurf, and complete the OAuth flow
+
+### Setup — Self-hosted (open-source)
+
+For teams that prefer token-based auth or need custom configuration:
+
+1. Create an internal integration at **notion.so/profile/integrations** and copy the token
+2. Share specific pages or databases with your integration
+3. Add to your MCP config:
+   ```json
+   {
+     "mcpServers": {
+       "notion": {
+         "command": "npx",
+         "args": ["-y", "@notionhq/notion-mcp-server"],
+         "env": {
+           "NOTION_TOKEN": "ntn_****"
+         }
+       }
+     }
+   }
+   ```
+
+### Example prompts
+
+> "Find the product roadmap database and list all items with status 'In Progress' for Q1."
+
+> "Create a new page under Engineering Wiki titled 'Auth Service Architecture' with sections for Overview, API Endpoints, and Database Schema."
+
+> "Look up the onboarding checklist and add a new item for setting up MCP tools with a due date of next Friday."
+
+> "Summarize all comments and discussions on the Q2 planning page."
+
+### Tips for better results
+
+The hosted server uses OAuth — no API keys to rotate or share. For team setups, use the `--scope project` flag in Claude Code so everyone shares the same config via `.mcp.json`. The agent works best when you reference pages and databases by name rather than ID. Note that some tools like workspace search and data source queries require Notion AI or Business/Enterprise plans.

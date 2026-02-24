@@ -23,8 +23,29 @@ compatibility:
     status: "no"
 ---
 
-The Stripe MCP Server lets your agent interact with your Stripe account for payments, subscriptions, invoices, and customer data. It is particularly valuable for founders and small teams who handle billing support themselves — you can look up a customer, check their payment history, issue a refund, or generate an invoice without opening the Stripe dashboard. It turns billing operations into conversational tasks.
+The Stripe MCP Server lets your agent interact with your Stripe account directly. Particularly valuable for founders and small teams who handle billing support themselves — look up a customer, check payment history, issue a refund, or generate an invoice without opening the dashboard.
 
-To set up, grab your Stripe API key from the **Developers > API keys** page in your Stripe dashboard. Use a restricted key with only the permissions you need rather than your secret key — this limits blast radius if anything goes wrong. Add the server to your MCP config with the `STRIPE_API_KEY` environment variable. Run `npx @stripe/mcp-server` to test the connection. Start with test mode keys first to verify everything works before pointing it at live data.
+What you can do:
 
-Prompts that work well: "Look up the customer with email jane@acme.com and show me their last 5 payments." Or "How many subscriptions churned in the last 30 days, and what was the total MRR lost?" For support workflows: "Customer ID cus_abc123 says they were double-charged — check their recent invoices and process a refund if there's a duplicate." The server handles both read and write operations, so you can go from investigation to resolution in a single conversation.
+- **Customer lookup** — find customers by email, ID, or subscription status
+- **Payment monitoring** — check recent charges, failed payments, and disputes
+- **Subscription management** — view, update, or cancel subscriptions
+- **Invoices & refunds** — generate invoices, process refunds, handle disputes
+- **Revenue reporting** — MRR, churn, and payment trends through natural language
+
+### Setup
+
+1. Grab your API key from **Developers > API keys** in the Stripe dashboard
+2. Use a **restricted key** with only the permissions you need — not your secret key
+3. Add the server to your MCP config with the `STRIPE_API_KEY` environment variable
+4. Run `npx @stripe/mcp-server` to test the connection
+
+Start with **test mode keys** first to verify everything works before pointing it at live data.
+
+### Example prompts
+
+> "Look up the customer with email jane@acme.com and show me their last 5 payments."
+
+> "How many subscriptions churned in the last 30 days, and what was the total MRR lost?"
+
+> "Customer cus_abc123 says they were double-charged — check their invoices and process a refund if there's a duplicate."

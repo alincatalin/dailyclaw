@@ -4,12 +4,12 @@ slug: "obsidian-mcp"
 icon: "🧠"
 category: "Knowledge Management"
 type: "MCP Server"
-license: "Open Source · MIT"
-installCmd: "npx obsidian-mcp"
-description: "Your second brain, now queryable and writable by agents. Read notes, search your vault, create new entries, and build knowledge graphs."
+license: "Open Source · Apache 2.0"
+installCmd: "npx obsidian-mcp-server"
+description: "Bridge between AI agents and your Obsidian vault. Read, search, create, and update notes — plus manage frontmatter, tags, and full-text search/replace across your entire knowledge base."
 makers: 17
-capabilities: ["Read notes", "Search vault", "Create notes", "Update notes", "List files", "Read daily notes"]
-version: "v2.0"
+capabilities: ["Read notes", "Search vault", "Create & update notes", "Frontmatter management", "Tag management", "Search & replace", "List directories", "Delete notes"]
+version: "v2.0.7"
 compatibility:
   - name: "Claude Code"
     status: "ok"
@@ -19,12 +19,92 @@ compatibility:
     status: "ok"
   - name: "Windsurf"
     status: "ok"
-  - name: "Zed"
-    status: "warn"
+  - name: "VS Code"
+    status: "ok"
 ---
 
-The Obsidian MCP Server turns your Obsidian vault into a queryable, writable knowledge base for your AI agent. Instead of manually searching through hundreds of notes, you can ask your agent to find relevant information, cross-reference topics, and even create or update notes on your behalf. It is a natural fit for anyone who uses Obsidian as a personal wiki, research repository, or daily journal — the agent can pull context from your existing notes to give more grounded, personalized answers.
+The [Obsidian MCP Server](https://github.com/cyanheads/obsidian-mcp-server) bridges AI agents to your Obsidian vault through the Local REST API plugin. It turns your vault into a queryable, writable knowledge base — a natural fit for anyone using Obsidian as a personal wiki, research repository, or daily journal. The agent pulls context from your existing notes to give more grounded, personalized answers.
 
-To set up, you need the Obsidian Local REST API plugin installed and enabled in your vault. Open Obsidian, go to **Settings > Community plugins**, search for "Local REST API," and install it. Once enabled, it will expose your vault on a local port (default 27124) with an API key for authentication. Add the server to your MCP config with the `OBSIDIAN_API_KEY` and `OBSIDIAN_API_URL` environment variables. Run `npx obsidian-mcp` and confirm it can list your vault files.
+Two connection options:
 
-Prompts that get real use: "Search my vault for everything I've written about microservices architecture and give me a summary." Or "Create a new note in my Projects folder titled 'CLI Rewrite Plan' with sections for goals, timeline, and open questions." For daily workflows: "Read today's daily note and pull out all action items into a bullet list." You can also use it for research synthesis: "Find all notes tagged #product-ideas from the last 3 months and identify the three most common themes." The read-write access means your agent can both consume and contribute to your knowledge base.
+- **HTTP (recommended)** — non-encrypted local server, typically at `http://127.0.0.1:27123`. Simplest setup.
+- **HTTPS** — encrypted endpoint at `https://127.0.0.1:27124` with a self-signed certificate. Requires `OBSIDIAN_VERIFY_SSL=false`.
+
+What you can do:
+
+- **Read notes** — retrieve content and metadata in markdown or JSON format
+- **Search vault** — full-text and regex search across the entire vault with pagination and path filtering
+- **Create & update** — write new notes or modify existing ones via append, prepend, or overwrite
+- **Search & replace** — find-and-replace within a specific note using text or regex
+- **Frontmatter** — get, set, or delete YAML frontmatter keys atomically
+- **Tags** — add, remove, or retrieve tags from notes (frontmatter and inline)
+- **List directories** — browse files and subdirectories with filtering by extension or name
+- **Delete notes** — permanently remove files from the vault
+
+### Prerequisites
+
+1. **Obsidian** installed with a vault open
+2. **Local REST API plugin** enabled — go to **Settings > Community plugins**, search "Local REST API", install and enable it
+3. **API key** — generated in the plugin settings (copy it for the next step)
+4. **Node.js v18+** with npm
+
+### Setup — Claude Code
+
+1. Run:
+   ```bash
+   claude mcp add obsidian-server -e OBSIDIAN_API_KEY=YOUR_KEY -e OBSIDIAN_BASE_URL=http://127.0.0.1:27123 -- npx obsidian-mcp-server
+   ```
+2. Start a new Claude Code instance
+3. Use `/mcp` to verify the server is connected
+
+### Setup — Claude Desktop
+
+Add to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "obsidian": {
+      "command": "npx",
+      "args": ["obsidian-mcp-server"],
+      "env": {
+        "OBSIDIAN_API_KEY": "YOUR_KEY",
+        "OBSIDIAN_BASE_URL": "http://127.0.0.1:27123"
+      }
+    }
+  }
+}
+```
+
+### Setup — Cursor / VS Code / Windsurf
+
+Add to your MCP configuration (`.mcp.json` or editor settings):
+
+```json
+{
+  "servers": {
+    "obsidian": {
+      "command": "npx",
+      "args": ["obsidian-mcp-server"],
+      "env": {
+        "OBSIDIAN_API_KEY": "YOUR_KEY",
+        "OBSIDIAN_BASE_URL": "http://127.0.0.1:27123"
+      }
+    }
+  }
+}
+```
+
+### Example prompts
+
+> "Search my vault for everything I've written about microservices architecture and summarize it."
+
+> "Create a new note in Projects titled 'CLI Rewrite Plan' with sections for goals, timeline, and open questions."
+
+> "Read today's daily note and pull out all action items into a bullet list."
+
+> "Find all notes tagged #product-ideas and identify common themes across them."
+
+### Tips for better results
+
+Keep your vault organized with clear folder structures and consistent tagging — the agent's search results improve dramatically with well-named notes and meaningful frontmatter. For large vaults, the built-in cache (enabled by default, refreshes every 10 minutes) keeps operations fast. If you're on HTTPS, set `OBSIDIAN_VERIFY_SSL=false` to avoid self-signed certificate errors.

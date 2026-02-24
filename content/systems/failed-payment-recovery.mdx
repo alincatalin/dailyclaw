@@ -15,6 +15,24 @@ patterns: ["multi-tool-pipeline", "personalization-agent", "scheduled-agent"]
 tradeoffs: "High impact on revenue recovery but requires careful email tone tuning. Start with human review before auto-send."
 ---
 
+## What This System Solves
+
+Failed payments are silent revenue killers. Most SaaS companies lose 5–10% of MRR to involuntary churn — expired cards, insufficient funds, bank declines. The default Stripe dunning emails are generic and easy to ignore. Most teams either don't follow up at all, or waste hours manually checking the dashboard and writing one-off emails.
+
+This system creates a **payment recovery pipeline** that detects failed charges, pulls customer context from Stripe, and drafts personalized recovery emails through Gmail. The key difference: every email is tailored to the specific customer, their plan, and their payment history — not a template blast.
+
+## Architecture
+
+```mermaid
+flowchart TD
+    Cron[Cron Schedule] -->|Daily trigger| Agent[OpenClaw Agent]
+    Agent -->|Query failed charges| Stripe[Stripe MCP]
+    Stripe -->|Customer data| Agent
+    Agent -->|Draft email| Gmail[Gmail MCP]
+    Gmail -->|Send or queue| Review[Human Review]
+    Review -->|Approve| Customer[Customer Inbox]
+```
+
 <StepCard number={1} label="Prerequisites" heading="Connect Stripe and Gmail MCP servers">
 
 You need two MCP servers: **Stripe MCP** for monitoring payments and **Gmail MCP** for sending recovery emails.
@@ -44,3 +62,19 @@ After a week of consistent quality, enable auto-send. Track your recovery rate �
 Pro tip: add a follow-up step. If the customer hasn't updated their payment method within 3 days, send a shorter, more urgent follow-up. Two touches typically recover more than one.
 
 </StepCard>
+
+## Advanced Patterns
+
+Once the base recovery loop is working, you can layer in intelligence. Add **churn risk scoring** based on payment history — a customer who's failed once in two years gets a gentle nudge, while someone on their third consecutive failure gets a more urgent tone with an offer to hop on a call. You can also build **retry timing logic** that coordinates with Stripe's automatic retry schedule, so your outreach lands between retries rather than competing with them. For higher-value accounts, route the draft to your success team instead of auto-sending — a personal touch from a human on a $500/mo plan is worth the extra step.
+
+## Limitations
+
+This system is powerful but sensitive. Email tone is everything — too casual and it feels careless, too aggressive and you lose the customer entirely. Expect to spend the first week tuning your prompt templates before the output is consistently right. The system also can't distinguish between a genuinely expired card and a customer who's intentionally letting their subscription lapse — so you may occasionally send recovery emails to people who've already decided to leave. Stripe's API rate limits apply, and if you're processing hundreds of failed payments daily, you'll need to batch your queries.
+
+## Expansion Paths
+
+The recovery pipeline is a natural starting point for a broader **revenue operations system**. You can extend it with **payment method expiration alerts** — emailing customers before their card expires, not after it fails. Add **win-back campaigns** for customers who do churn, triggered 30 or 60 days after cancellation. Connect it to your **billing dashboard** to auto-generate weekly recovery reports with rates, revenue saved, and trends. For teams using Slack, route daily recovery summaries to a channel so leadership has visibility without checking Stripe.
+
+## Cross-System Hooks
+
+This system connects well to the [Morning Standup Brief](/systems/morning-standup-brief) — failed payment counts and recovery rates make a useful daily metric. It can also feed into an [Automated Issue Triage](/systems/automated-issue-triage) system if customers open support tickets about billing, helping the triage agent flag payment-related issues for priority handling. For teams running multiple agent systems, the recovery pipeline's customer context can be shared with a **Document Scribe** to keep internal CRM notes up to date.

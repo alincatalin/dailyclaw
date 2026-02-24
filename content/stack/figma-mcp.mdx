@@ -4,16 +4,16 @@ slug: "figma-mcp"
 icon: "🎨"
 category: "Design"
 type: "MCP Server"
-license: "Open Source · MIT"
-installCmd: "npx @anthropic/mcp-server-figma"
-description: "Bridge the gap between design and code. Read Figma files, extract design tokens, inspect components, and generate code from designs."
+license: "Figma Official"
+installCmd: "claude mcp add --transport http figma https://mcp.figma.com/mcp"
+description: "Official Figma integration for AI coding agents. Select frames and generate code, extract design tokens, and leverage Code Connect for design system consistency."
 makers: 8
-capabilities: ["Read files", "Extract tokens", "Component inspection", "Style extraction", "Asset export", "Design search"]
-version: "v1.0"
+capabilities: ["Code generation", "Design context extraction", "Code Connect", "Variable extraction", "Component inspection", "Layout data"]
+version: "Latest"
 compatibility:
   - name: "Claude Code"
     status: "ok"
-  - name: "Claude Desktop"
+  - name: "VS Code"
     status: "ok"
   - name: "Cursor"
     status: "ok"
@@ -23,8 +23,58 @@ compatibility:
     status: "no"
 ---
 
-The Figma MCP Server lets your AI agent read Figma files, extract design tokens, inspect component structures, and pull style information directly into your development workflow. Instead of manually translating a design into code — eyeballing spacing, copying hex values, and guessing at font weights — your agent reads the source file and generates accurate implementations. It is the fastest way to close the gap between what a designer hands off and what ships in production.
+The [Figma MCP Server](https://developers.figma.com/docs/figma-mcp-server/) is Figma's official integration for AI coding agents. It connects your IDE directly to your Figma files — select a frame, ask your agent to build it, and get code that actually matches the design. No more eyeballing spacing or copying hex values.
 
-To set up, generate a personal access token in Figma under **Settings > Account > Personal access tokens**. Add the server to your MCP config and set the `FIGMA_API_KEY` environment variable. Run `npx @anthropic/mcp-server-figma` to confirm it connects. You will need the file key from any Figma URL (the string after `/file/` in the URL) to point the agent at specific designs. Note that Windsurf and Zed are not currently supported.
+Two connection methods:
 
-Prompts that designers and frontend developers use: "Open the Figma file for the dashboard redesign and extract all the color tokens, font sizes, and spacing values as CSS custom properties." Or "Inspect the card component in this Figma file and generate a React component with Tailwind classes that matches the design." For design system work: "Compare the button styles in our Figma file against our current button component and list every discrepancy in padding, border-radius, and color." The server reads the Figma document tree, so it understands layers, groups, auto-layout properties, and component variants.
+- **Remote server** — connects to Figma's hosted endpoint at `mcp.figma.com`, no desktop app required. Uses OAuth authentication.
+- **Desktop server** — runs locally through the Figma desktop app at `127.0.0.1:3845`. Supports selection-based prompting (select a frame in Figma, then ask your agent).
+
+What you can do:
+
+- **Generate code from frames** — select a Figma frame and turn it into production code
+- **Extract design context** — pull variables, components, and layout data into your IDE
+- **Code Connect** — leverage your actual design system components so generated code stays consistent with your codebase
+- **Retrieve Make resources** — access code resources from Make files as context during development
+
+### Setup — Remote server
+
+The remote server is the simplest path. No Figma desktop app needed.
+
+**Claude Code:**
+1. Run `claude mcp add --transport http figma https://mcp.figma.com/mcp`
+2. Start a new Claude Code instance
+3. Use `/mcp` → select figma → Authenticate through browser
+
+**Cursor:**
+1. Click the Figma MCP server deep link from the docs
+2. Click Install → Connect → Open
+3. Allow access through browser
+
+**VS Code:**
+1. Open command palette (Cmd+Shift+P) → "MCP: Open User Configuration"
+2. Add the Figma server config pointing to `https://mcp.figma.com/mcp`
+3. Click Start and authorize access
+
+### Setup — Desktop server
+
+Requires the Figma desktop app. Gives you selection-based prompting — select a frame in Figma, then ask your agent about it.
+
+1. Open a Design file in Figma desktop → switch to **Dev Mode** (Shift+D)
+2. In the Inspect panel, click **"Enable desktop MCP server"**
+3. The server runs at `http://127.0.0.1:3845/mcp`
+4. Add it to your editor — e.g. `claude mcp add --transport http figma-desktop http://127.0.0.1:3845/mcp`
+
+### Example prompts
+
+> "Select this frame and generate a React component with Tailwind classes that matches the design."
+
+> "Extract all color tokens, font sizes, and spacing values as CSS custom properties."
+
+> "Use my Code Connect components to build out this new feature flow from the Figma designs."
+
+> "Compare the button styles in our Figma file against our current button component and list every discrepancy."
+
+### Tips for better output
+
+Structure your Figma files for cleaner results — use auto-layout, name your layers clearly, and avoid massive heavy frames. Writing specific prompts helps too: tell the agent which framework, styling approach, and component patterns to follow.

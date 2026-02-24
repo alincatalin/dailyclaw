@@ -113,7 +113,7 @@ export default function HomePage() {
             <>
               <StackCard icon="&#9881;&#65039;" name="Linear MCP" description="Project management via natural language." category="Productivity" slug="linear-mcp" />
               <StackCard icon="&#128230;" name="GitHub MCP" description="Full repo control, issue triage, PR reviews." category="Developer Tools" slug="github-mcp" />
-              <StackCard icon="&#9993;&#65039;" name="Gmail MCP" description="Read, send, and triage emails from agents." category="Communication" slug="gmail-mcp" />
+              <StackCard icon="&#128236;" name="GOG — Google Workspace" description="Gmail, Calendar, Drive, and more from one CLI." category="Communication" slug="google-workspace-cli" />
               <StackCard icon="&#129504;" name="Obsidian MCP" description="Your second brain, queryable by agents." category="Knowledge" slug="obsidian-mcp" />
               <StackCard icon="&#128179;" name="Stripe MCP" description="Payments, subscriptions, and customer data." category="Payments" slug="stripe-mcp" />
               <StackCard icon="&#128451;&#65039;" name="Notion MCP" description="Databases, pages, and docs via agents." category="Productivity" slug="notion-mcp" />

@@ -4,6 +4,16 @@ import QABlock from "./QABlock";
 import PullQuote from "./PullQuote";
 import TipBox from "./TipBox";
 import StepCard from "./StepCard";
+import MermaidDiagram from "./MermaidDiagram";
+import styles from "./MdxContent.module.css";
+
+function PreBlock(props: React.ComponentProps<"pre">) {
+  const child = props.children as React.ReactElement<{ className?: string; children?: string }>;
+  if (child?.props?.className === "language-mermaid") {
+    return <MermaidDiagram chart={child.props.children || ""} />;
+  }
+  return <pre {...props} />;
+}
 
 const components = {
   CodeBlock,
@@ -11,6 +21,8 @@ const components = {
   PullQuote,
   TipBox,
   StepCard,
+  MermaidDiagram,
+  pre: PreBlock,
   code: (props: React.ComponentProps<"code">) => (
     <code style={{
       fontFamily: "var(--font-mono), monospace",
@@ -23,5 +35,9 @@ const components = {
 };
 
 export default function MdxContent({ source }: { source: string }) {
-  return <MDXRemote source={source} components={components} />;
+  return (
+    <div className={styles.prose}>
+      <MDXRemote source={source} components={components} />
+    </div>
+  );
 }

@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import NoiseOverlay from "@/components/effects/NoiseOverlay";
+import MixpanelProvider from "@/components/analytics/MixpanelProvider";
 
 const spaceMono = Space_Mono({
   variable: "--font-body-mono",
@@ -60,6 +61,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${spaceMono.variable} ${bebasNeue.variable} ${dmSerifDisplay.variable} ${ibmPlexMono.variable}`}
         style={{ fontFamily: "var(--font-body-mono), monospace" }}>
+        <MixpanelProvider />
         <NoiseOverlay />
         <div className="siteWrapper">
           <Header />

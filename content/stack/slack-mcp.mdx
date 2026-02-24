@@ -23,8 +23,29 @@ compatibility:
     status: "no"
 ---
 
-The Slack MCP Server lets your AI agent read and write messages in your Slack workspace. You can pull context from channel conversations, post status updates, reply in threads, and search message history — all without leaving your coding environment. It is especially useful for workflows where you need to cross-reference a Slack discussion with your code, or when you want to notify your team about a deployment or completed task directly from your agent.
+The Slack MCP Server lets your AI agent read and write messages in your Slack workspace. Useful for cross-referencing channel discussions with your code, notifying your team about deployments, or catching up on conversations you missed.
 
-To set up, create a Slack app at **api.slack.com/apps** and configure it with the Bot Token scopes you need (at minimum: `channels:read`, `channels:history`, `chat:write`, and `users:read`). Install the app to your workspace and copy the Bot User OAuth Token. Add the server to your MCP config and set the `SLACK_BOT_TOKEN` environment variable. Run `npx @anthropic/mcp-server-slack` to test the connection. Note that Cursor and Windsurf support is limited, so verify functionality if you are on those clients.
+What you can do:
 
-Practical prompts makers use daily: "Read the last 20 messages in #engineering-incidents and summarize what happened with the database outage." Or "Post to #deployments: 'v2.4.1 shipped to production — includes the cart fix and rate limiter update.'" Thread management is where it gets powerful: "Find the thread in #backend where someone asked about the Redis caching strategy and reply with the approach we decided on in our code review." The agent handles the Slack API complexity so you can focus on the actual communication.
+- **Read channels** — pull recent messages, catch up on discussions
+- **Post messages** — send updates, announcements, and status reports
+- **Thread management** — reply in context, keep conversations organized
+- **Search** — find specific messages, topics, or mentions across your workspace
+
+### Setup
+
+1. Create a Slack app at **api.slack.com/apps**
+2. Add Bot Token scopes: `channels:read`, `channels:history`, `chat:write`, `users:read`
+3. Install the app to your workspace and copy the **Bot User OAuth Token**
+4. Add the server to your MCP config with the `SLACK_BOT_TOKEN` environment variable
+5. Run `npx @anthropic/mcp-server-slack` to test
+
+**Note:** Cursor and Windsurf support is limited — verify functionality on those clients.
+
+### Example prompts
+
+> "Read the last 20 messages in #engineering-incidents and summarize the database outage."
+
+> "Post to #deployments: 'v2.4.1 shipped — includes the cart fix and rate limiter update.'"
+
+> "Find the thread in #backend about Redis caching and reply with the approach from our code review."

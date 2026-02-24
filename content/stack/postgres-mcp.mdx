@@ -23,8 +23,29 @@ compatibility:
     status: "warn"
 ---
 
-The PostgreSQL MCP Server gives your AI agent direct access to your Postgres databases. You can inspect schemas, run queries, analyze indexes, and generate reports through natural language. It is invaluable during development — instead of switching to a SQL client to check table structures or verify data, you ask your agent and get the answer inline. The server runs read queries by default, so you can explore your data without worrying about accidental mutations.
+The PostgreSQL MCP Server gives your AI agent direct access to your Postgres databases. Invaluable during development — instead of switching to a SQL client, ask your agent and get the answer inline. Runs read queries by default, so you can explore data without worrying about accidental mutations.
 
-To connect, you need a PostgreSQL connection string in the format `postgresql://user:password@host:port/database`. Add the server to your MCP config and set the `POSTGRES_CONNECTION_STRING` environment variable. Run `npx @modelcontextprotocol/server-postgres` and the agent will immediately have access to list tables, describe schemas, and run queries. For production databases, use a read-only connection string to enforce safe access at the database level.
+What you can do:
 
-Prompts makers reach for regularly: "Show me the schema for the users and orders tables, including indexes and foreign keys." Or "How many orders were placed in the last 7 days, grouped by status?" It also helps when writing migrations: "Compare the current schema of the payments table with this migration file and tell me if anything is missing." For debugging, try: "Find all users who signed up in the last 24 hours but have zero orders — give me their emails and signup timestamps." The agent translates your intent into SQL, runs it, and presents results in a readable format.
+- **Schema inspection** — list tables, describe columns, indexes, and foreign keys
+- **Run queries** — natural language to SQL, results in a readable format
+- **Index analysis** — identify missing indexes and optimization opportunities
+- **Data export** — pull query results for debugging or reporting
+
+### Setup
+
+1. Prepare a connection string: `postgresql://user:password@host:port/database`
+2. Add the server to your MCP config with the `POSTGRES_CONNECTION_STRING` environment variable
+3. Run `npx @modelcontextprotocol/server-postgres` to verify
+
+For production databases, use a **read-only connection string** to enforce safe access at the database level.
+
+### Example prompts
+
+> "Show me the schema for the users and orders tables, including indexes and foreign keys."
+
+> "How many orders were placed in the last 7 days, grouped by status?"
+
+> "Compare the current schema of the payments table with this migration file — anything missing?"
+
+> "Find all users who signed up in the last 24 hours but have zero orders."

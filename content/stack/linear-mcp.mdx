@@ -4,27 +4,109 @@ slug: "linear-mcp"
 icon: "⚙️"
 category: "Project Management"
 type: "MCP Server"
-license: "Open Source · MIT"
-installCmd: "npx @linear/mcp-server"
-description: "Full programmatic access to your Linear workspace — read, create, update, and query issues, projects, teams, and cycles via natural language."
+license: "Linear Official"
+installCmd: "claude mcp add --transport http linear-server https://mcp.linear.app/mcp"
+description: "Official Linear integration for AI coding agents. Discover, create, and modify issues, projects, and comments across your workspace — all through natural language."
 makers: 14
-capabilities: ["Read issues & projects", "Create & update issues", "Cycle management", "Comment & mention", "Label operations", "Team & member data"]
-version: "v2.1"
+capabilities: ["Issue management", "Project & cycle tracking", "Comment & mention", "Label operations", "Team & member data", "OAuth 2.1 authentication"]
+version: "Latest"
 compatibility:
   - name: "Claude Code"
     status: "ok"
-  - name: "Claude Desktop"
+  - name: "VS Code"
     status: "ok"
   - name: "Cursor"
     status: "ok"
   - name: "Windsurf"
-    status: "warn"
+    status: "ok"
   - name: "Zed"
-    status: "no"
+    status: "ok"
 ---
 
-The Linear MCP Server gives your AI agent direct access to your Linear workspace. Instead of switching between your editor and Linear's UI, you can create issues, update statuses, query backlogs, and manage cycles entirely through conversation. It works especially well for triaging bugs mid-coding session — describe the problem, assign it to the right team, set priority, and move on without breaking flow.
+The [Linear MCP Server](https://linear.app/docs/mcp) is Linear's official MCP integration. It provides a centrally hosted, authenticated server that gives any compatible AI agent direct access to your Linear workspace. Instead of switching between your editor and Linear's UI, you can manage your entire project workflow through conversation. Works especially well for triaging bugs mid-coding session — describe the problem, assign it, set priority, and move on without breaking flow.
 
-To get started, generate a Linear API key from your workspace settings under **Settings > API > Personal API Keys**. Copy the key and add the server to your MCP config file (e.g., `claude_desktop_config.json` or `.mcp.json` depending on your client). Set the `LINEAR_API_KEY` environment variable in the server configuration. Run `npx @linear/mcp-server` to verify the connection, and you should see your workspace data come through immediately.
+Two transport options:
 
-Here are prompts that work well in practice: "Create a high-priority bug for the payments team: checkout fails when applying two discount codes at once." Or "Show me all in-progress issues assigned to me in the current cycle." You can also batch operations: "Move all issues labeled 'needs-triage' in Project Atlas to the backlog and add a comment saying we'll revisit next sprint." The server handles reads and writes, so you can go from investigation to action without leaving your agent.
+- **HTTP (recommended)** — connects to Linear's hosted endpoint at `mcp.linear.app/mcp`. More reliable and broadly supported.
+- **SSE** — Server-Sent Events transport at `mcp.linear.app/sse`. Useful as a fallback for WSL users on Windows.
+
+What you can do:
+
+- **Issues** — discover, create, update, assign, prioritize, and close
+- **Projects & cycles** — query backlogs, manage sprints, track progress
+- **Comments** — add, read, and reference comments on any issue
+- **Team data** — look up members, assignments, and workload distribution
+
+### Setup — Claude Code
+
+The simplest path. One command, then authenticate through your browser.
+
+1. Run `claude mcp add --transport http linear-server https://mcp.linear.app/mcp`
+2. Start a new Claude Code instance
+3. Use `/mcp` → select linear-server → Authenticate through browser
+
+### Setup — Cursor
+
+One-click installation available through the MCP tools directory.
+
+1. Open Cursor's MCP tools directory
+2. Find Linear and click Install
+3. Authorize access through browser
+
+### Setup — VS Code
+
+Uses `npx mcp-remote` to proxy the remote server.
+
+1. Open command palette (Cmd+Shift+P) → "MCP: Open User Configuration"
+2. Add the Linear server config:
+   ```json
+   {
+     "servers": {
+       "linear": {
+         "command": "npx",
+         "args": ["-y", "mcp-remote", "https://mcp.linear.app/sse"]
+       }
+     }
+   }
+   ```
+3. Click Start and authorize access
+
+### Setup — Windsurf
+
+Same approach as VS Code — configure in settings JSON.
+
+1. Open Windsurf MCP configuration
+2. Add the Linear server:
+   ```json
+   {
+     "servers": {
+       "linear": {
+         "command": "npx",
+         "args": ["-y", "mcp-remote", "https://mcp.linear.app/sse"]
+       }
+     }
+   }
+   ```
+3. Authorize access through browser
+
+### Setup — Zed
+
+Configured as a custom context server.
+
+1. Open Zed settings
+2. Add Linear as a context server using `npx mcp-remote https://mcp.linear.app/sse`
+3. Authorize access through browser
+
+### Example prompts
+
+> "Create a high-priority bug for the payments team: checkout fails when applying two discount codes."
+
+> "Show me all in-progress issues assigned to me in the current cycle."
+
+> "Move all issues labeled 'needs-triage' in Project Atlas to the backlog and add a comment."
+
+> "Summarize what the frontend team shipped this cycle and list any issues that slipped."
+
+### Tips for better results
+
+Use specific language when referencing Linear objects — include team names, project names, and label names so the agent resolves them correctly. For batch operations, be explicit about scope (e.g. "all issues in Project X labeled 'bug'") to avoid unintended changes. If you hit authentication errors, clear the cache with `rm -rf ~/.mcp-auth` and re-authenticate.

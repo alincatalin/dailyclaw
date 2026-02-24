@@ -5,11 +5,11 @@ icon: "🔍"
 category: "Search"
 type: "MCP Server"
 license: "Open Source · MIT"
-installCmd: "npx @modelcontextprotocol/server-brave-search"
-description: "Give your agent real-time web access without hallucinations. Search the web, get current information, and ground responses in facts."
+installCmd: "npx -y @brave/brave-search-mcp-server"
+description: "Web, local, image, video, and news search with AI-powered summarization. Real-time web access for your agents."
 makers: 18
-capabilities: ["Web search", "News search", "Image search", "Local search", "Result summarization", "URL fetching"]
-version: "v1.5"
+capabilities: ["Web search", "Local search", "Video search", "Image search", "News search", "AI summarization"]
+version: "v2.x"
 compatibility:
   - name: "Claude Code"
     status: "ok"
@@ -23,8 +23,33 @@ compatibility:
     status: "ok"
 ---
 
-The Brave Search MCP Server gives your AI agent live access to the web. Whenever your agent needs current information — recent library releases, API documentation, error messages, or news — it can search Brave and pull back real results instead of guessing. This eliminates a whole class of hallucinations around version numbers, API changes, and recent events. It supports web, news, image, and local search out of the box.
+The [Brave Search MCP Server](https://github.com/brave/brave-search-mcp-server) gives your AI agent live access to the web. Whenever your agent needs current information — recent library releases, API documentation, error messages, or local business details — it searches Brave and returns real results instead of guessing.
 
-To get started, sign up for a Brave Search API key at **brave.com/search/api** — the free tier gives you 2,000 queries per month, which is plenty for individual use. Add the server to your MCP config and set the `BRAVE_API_KEY` environment variable. Run `npx @modelcontextprotocol/server-brave-search` to verify. The server is lightweight and has full compatibility across all major MCP clients, so setup is straightforward regardless of your editor.
+It exposes six dedicated tools:
 
-Prompts that get the most use: "Search for the latest release notes for Next.js 15 and summarize breaking changes." Or "Look up the current best practice for handling JWT refresh tokens in 2025." It is also handy for debugging: "Search for this error message: 'ECONNREFUSED 127.0.0.1:5432' and tell me the most common fixes." Makers often chain search with other tools — search for documentation, then apply the findings directly to their code in the same conversation.
+- **Web search** — full-featured search with filtering and spellcheck
+- **Local search** — business and place discovery with ratings
+- **Video search** — video results with metadata and thumbnails
+- **Image search** — image discovery with automatic fetching
+- **News search** — current articles with freshness controls
+- **AI summarizer** — condense search results into a concise answer
+
+This eliminates a whole class of hallucinations around version numbers, API changes, and recent events.
+
+### Setup
+
+1. Grab an API key from **brave.com/search/api** — the free tier gives you 2,000 queries/month
+2. Add the server to your MCP config and set the `BRAVE_API_KEY` environment variable
+3. Install with `npx -y @brave/brave-search-mcp-server`, or use Docker via `mcp/brave-search`
+
+The default transport is STDIO. Switch to HTTP with `BRAVE_MCP_TRANSPORT=http` if needed. You can also control which tools are exposed using `BRAVE_MCP_ENABLED_TOOLS` or `BRAVE_MCP_DISABLED_TOOLS` to limit the surface area.
+
+### Example prompts
+
+> "Search for the latest release notes for Next.js 15 and summarize breaking changes."
+
+> "Find local coffee shops near me with ratings above 4.5."
+
+> "Search for this error: 'ECONNREFUSED 127.0.0.1:5432' and tell me the most common fixes."
+
+The news tool is particularly useful for time-sensitive queries, and the summarizer saves you from reading through ten links to get a straight answer.

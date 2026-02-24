@@ -193,6 +193,18 @@
   color: var(--muted);
 }
 
+.stepsMain a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  transition: text-decoration-color 0.15s;
+}
+
+.stepsMain a:hover {
+  text-decoration-color: var(--accent);
+}
+
 /* STEPS SIDEBAR */
 .stepsSidebar {
   padding: 2rem;

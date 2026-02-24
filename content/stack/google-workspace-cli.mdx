@@ -1,0 +1,125 @@
+---
+title: "GOG — Google Workspace CLI"
+slug: "google-workspace-cli"
+icon: "📬"
+category: "Communication"
+type: "CLI Tool"
+license: "Open Source · MIT"
+installCmd: "brew install steipete/tap/gogcli"
+description: "Unified CLI for Gmail, Calendar, Drive, Contacts, Tasks, Sheets, Docs, and Slides — with JSON output, multi-account support, and Gmail Pub/Sub push for real-time agent workflows."
+makers: 9
+capabilities: ["Gmail search & send", "Calendar events & RSVP", "Drive upload & download", "Sheets & Docs read/write", "Contacts & People", "Tasks management", "Gmail Pub/Sub watch", "Multi-account support"]
+version: "Latest"
+compatibility:
+  - name: "Claude Code"
+    status: "ok"
+  - name: "macOS"
+    status: "ok"
+  - name: "Linux"
+    status: "ok"
+  - name: "Windows"
+    status: "ok"
+  - name: "OpenClaw"
+    status: "ok"
+---
+
+[GOG](https://gogcli.sh/) unifies Gmail, Calendar, Drive, Contacts, Tasks, Sheets, Docs, and Slides under one CLI — with JSON output and sane defaults. Instead of juggling separate APIs and SDKs, you get a single `gog` command that covers the full Google Workspace surface. Pairs especially well with AI agents: pipe JSON output into your agent's context, or use the Gmail Pub/Sub watch daemon to trigger workflows on incoming email.
+
+Two install options:
+
+- **Homebrew (recommended)** — `brew install steipete/tap/gogcli`. One command, ready to go.
+- **From source** — clone the [repo](https://github.com/steipete/gogcli), run `make`, and use `./bin/gog`.
+
+What you can do:
+
+- **Gmail** — search, send, manage labels, create drafts, set up filters, configure settings, and run Pub/Sub watch for push notifications
+- **Calendar** — list, create, and update events, RSVP, detect conflicts, check free/busy
+- **Drive** — list, search, upload, download, manage permissions and folders, export to PDF/DOCX/PPTX/XLSX/CSV
+- **Sheets / Docs / Slides** — read and write content with format export
+- **Contacts & People** — personal contacts, workspace directory, profile lookups
+- **Tasks** — manage tasklists with add, update, done, and delete operations
+
+### Setup — Authentication
+
+1. Download your Google Cloud OAuth credentials (Desktop app type):
+   ```bash
+   gog auth credentials ~/Downloads/client_secret_....json
+   ```
+2. Add an account (opens browser for OAuth consent):
+   ```bash
+   gog auth add you@gmail.com
+   ```
+3. Set your default account:
+   ```bash
+   export GOG_ACCOUNT=you@gmail.com
+   ```
+
+Credentials are stored in your OS keyring (Keychain on macOS, Secret Service on Linux, CredMan on Windows). Use `gog auth manage` to switch between multiple accounts.
+
+### Setup — Gmail Pub/Sub with OpenClaw
+
+GOG's `gmail watch serve` daemon connects Gmail push notifications to [OpenClaw webhooks](https://docs.openclaw.ai/automation/gmail-pubsub), enabling real-time email processing and delivery to chat surfaces.
+
+**How it works:** Gmail watch detects new messages → publishes to Pub/Sub topic → `gog gmail watch serve` daemon receives push → forwards to OpenClaw webhook → processes email and delivers summary.
+
+**Quick setup (recommended):**
+```bash
+openclaw webhooks gmail setup --account openclaw@gmail.com
+```
+
+This installs dependencies, configures Tailscale Funnel for HTTPS tunneling, and enables the Gmail hook preset automatically.
+
+**Manual setup:**
+1. Configure your GCP project and enable Gmail + Pub/Sub APIs:
+   ```bash
+   gcloud services enable gmail.googleapis.com pubsub.googleapis.com
+   ```
+2. Create the Pub/Sub topic:
+   ```bash
+   gcloud pubsub topics create gog-gmail-watch
+   ```
+3. Grant Gmail API publish permissions to the topic
+4. Run the daemon:
+   ```bash
+   gog gmail watch serve --account you@gmail.com \
+     --bind 127.0.0.1 --port 8788 --path /gmail-pubsub \
+     --hook-url <openclaw-endpoint>
+   ```
+
+Or use the automated runner: `openclaw webhooks gmail run`
+
+### Example usage
+
+```bash
+# Search Gmail
+gog gmail search "from:sarah subject:roadmap" --max 5
+
+# Send an email
+gog gmail send --to team@company.com --subject "Standup notes" --body "..."
+
+# List today's calendar events
+gog calendar list --from today --to tomorrow
+
+# Upload a file to Drive
+gog drive upload ./report.pdf --folder "Shared Reports"
+
+# Read a Google Sheet as JSON
+gog sheets get <sheet-id> --format json
+
+# Check Gmail watch status
+gog gmail watch status --account you@gmail.com
+```
+
+### Example agent prompts
+
+> "Search my inbox for all unread emails from the last 24 hours and summarize each one."
+
+> "Draft a reply to Sarah's email about the Q3 roadmap — acknowledge her timeline concerns and suggest a sync next Tuesday."
+
+> "Check my calendar for conflicts next week and list all double-booked slots."
+
+> "Find all files in my Drive folder 'Client Proposals' and list them with their last modified dates."
+
+### Tips for better results
+
+Use `--format json` when piping output to agents — it gives structured data instead of table formatting. For multi-account setups, set `GOG_ACCOUNT` per session or use `gog auth manage` to switch. The Gmail Pub/Sub watch auto-renews, but check status with `gog gmail watch status` if notifications stop. Gmail hook content in OpenClaw is wrapped with safety boundaries by default to prevent injection attacks via email content.
