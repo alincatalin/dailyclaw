@@ -32,14 +32,14 @@ const ibmPlexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "DailyClaw — OpenClaw Workflows, Automations & Builder Spotlights",
+    default: "DailyClaw — The Systems Library for OpenClaw Builders",
     template: "%s | DailyClaw",
   },
-  description: "Workflows, automations, and builder spotlights powered by OpenClaw. Copy-paste recipes, tool guides, and deep-dive interviews.",
+  description: "The systems library for people using OpenClaw to design, build, and ship agent architectures. Systems, patterns, stack, and field notes.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://dailyclaw.dev"),
   openGraph: {
-    title: "DailyClaw — OpenClaw Workflows, Automations & Builder Spotlights",
-    description: "See what people build with OpenClaw. Workflows, automations, tool setups, and interviews with the builders shipping with AI.",
+    title: "DailyClaw — The Systems Library for OpenClaw Builders",
+    description: "Reference systems, architecture patterns, and the stack that powers OpenClaw builders. Field notes from people who ship.",
     type: "website",
     locale: "en_US",
     siteName: "DailyClaw",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "DailyClaw",
-    description: "OpenClaw Workflows, Automations & Builder Spotlights",
+    description: "The Systems Library for OpenClaw Builders",
   },
 };
 

@@ -1,43 +1,43 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getInterview, getInterviews } from "@/lib/content";
+import { getFieldNote, getFieldNotes } from "@/lib/content";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import MdxContent from "@/components/content/MdxContent";
 import AdSlot from "@/components/ui/AdSlot";
-import styles from "./interview-detail.module.css";
+import styles from "./field-note-detail.module.css";
 
 export async function generateStaticParams() {
-  return getInterviews().map((i) => ({ slug: i.slug }));
+  return getFieldNotes().map((i) => ({ slug: i.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const interview = getInterview(slug);
-  if (!interview) return {};
+  const note = getFieldNote(slug);
+  if (!note) return {};
   return {
-    title: `${interview.name} — DailyClaw Interview`,
-    description: interview.pullQuote,
+    title: `${note.name} — DailyClaw Field Notes`,
+    description: note.pullQuote,
   };
 }
 
-export default async function InterviewDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function FieldNoteDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const interview = getInterview(slug);
-  if (!interview) notFound();
+  const note = getFieldNote(slug);
+  if (!note) notFound();
 
-  const interviews = getInterviews();
-  const currentIndex = interviews.findIndex((i) => i.slug === slug);
-  const prev = currentIndex > 0 ? interviews[currentIndex - 1] : null;
-  const next = currentIndex < interviews.length - 1 ? interviews[currentIndex + 1] : null;
+  const allNotes = getFieldNotes();
+  const currentIndex = allNotes.findIndex((i) => i.slug === slug);
+  const prev = currentIndex > 0 ? allNotes[currentIndex - 1] : null;
+  const next = currentIndex < allNotes.length - 1 ? allNotes[currentIndex + 1] : null;
 
-  const initials = interview.name.split(" ").map((n) => n[0]).join("");
+  const initials = note.name.split(" ").map((n) => n[0]).join("");
 
   return (
     <>
       <Breadcrumb items={[
         { label: "Home", href: "/" },
-        { label: "Interviews", href: "/interviews" },
-        { label: interview.name },
+        { label: "Field Notes", href: "/field-notes" },
+        { label: note.name },
       ]} />
 
       {/* HERO */}
@@ -45,35 +45,35 @@ export default async function InterviewDetailPage({ params }: { params: Promise<
         <div className={`${styles.heroMain} anim anim-d1`}>
           <div>
             <div className={styles.interviewMeta}>
-              <div className={styles.interviewNum}>{String(interview.number).padStart(2, "0")}</div>
+              <div className={styles.interviewNum}>{String(note.number).padStart(2, "0")}</div>
               <div className={styles.interviewTags}>
-                {interview.tags.map((tag) => (
+                {note.tags.map((tag) => (
                   <span key={tag} className={styles.tagPill}>{tag}</span>
                 ))}
-                <span className={styles.tagPill}>{interview.location}</span>
-                <span className={styles.tagPill}>{interview.date}</span>
+                <span className={styles.tagPill}>{note.location}</span>
+                <span className={styles.tagPill}>{note.date}</span>
               </div>
             </div>
 
             <h1 className={styles.makerName}>
-              {interview.name.split(" ")[0].toUpperCase()}
-              <em>{interview.name.split(" ").slice(1).join(" ")}</em>
+              {note.name.split(" ")[0].toUpperCase()}
+              <em>{note.name.split(" ").slice(1).join(" ")}</em>
             </h1>
             <div className={styles.makerDescriptor}>
-              <span className={styles.handle}>@{interview.handle}</span>
+              <span className={styles.handle}>@{note.handle}</span>
               <span className={styles.dot}>&middot;</span>
-              <span>{interview.role}</span>
+              <span>{note.role}</span>
             </div>
           </div>
 
           <div className={styles.heroQuoteBlock}>
-            &ldquo;{interview.pullQuote}&rdquo;
+            &ldquo;{note.pullQuote}&rdquo;
           </div>
         </div>
 
         <div className={`${styles.heroSidebar} anim anim-d2`}>
           <div>
-            <div className={styles.sidebarLabel}>Maker</div>
+            <div className={styles.sidebarLabel}>Builder</div>
             <div className={styles.avatarLarge}>{initials}</div>
           </div>
 
@@ -81,19 +81,19 @@ export default async function InterviewDetailPage({ params }: { params: Promise<
             <div className={styles.sidebarLabel}>Setup Stats</div>
             <div className={styles.quickStats}>
               <div className={styles.quickStat}>
-                <span className={styles.qsNum}>{interview.stats.mcpServers}</span>
+                <span className={styles.qsNum}>{note.stats.mcpServers}</span>
                 <span className={styles.qsLabel}>MCP Servers</span>
               </div>
               <div className={styles.quickStat}>
-                <span className={styles.qsNum}>{interview.stats.activeAgents}</span>
+                <span className={styles.qsNum}>{note.stats.activeAgents}</span>
                 <span className={styles.qsLabel}>Active Agents</span>
               </div>
               <div className={styles.quickStat}>
-                <span className={styles.qsNum}>{interview.stats.savedPerDay}</span>
+                <span className={styles.qsNum}>{note.stats.savedPerDay}</span>
                 <span className={styles.qsLabel}>Saved / day</span>
               </div>
               <div className={styles.quickStat}>
-                <span className={styles.qsNum}>{interview.stats.automations}</span>
+                <span className={styles.qsNum}>{note.stats.automations}</span>
                 <span className={styles.qsLabel}>Automations</span>
               </div>
             </div>
@@ -102,7 +102,7 @@ export default async function InterviewDetailPage({ params }: { params: Promise<
           <div>
             <div className={styles.sidebarLabel}>Tools mentioned</div>
             <div className={styles.toolList}>
-              {interview.tools.map((tool) => (
+              {note.tools.map((tool) => (
                 <div key={tool} className={styles.toolRow}>
                   <span className={styles.toolRowName}>{tool}</span>
                   <span className={styles.toolRowArrow}>&nearr;</span>
@@ -116,14 +116,14 @@ export default async function InterviewDetailPage({ params }: { params: Promise<
       {/* BODY */}
       <div className={styles.body}>
         <div className={styles.content}>
-          <MdxContent source={interview.content} />
+          <MdxContent source={note.content} />
         </div>
         <div className={styles.contentSidebar}>
           <div>
             <div className={styles.sidebarLabel}>Related</div>
-            <Link href="/recipes" className={styles.relatedLink}>
-              <div className={styles.relatedType}>Recipes</div>
-              <div className={styles.relatedName}>Browse all recipes &rarr;</div>
+            <Link href="/systems" className={styles.relatedLink}>
+              <div className={styles.relatedType}>Systems</div>
+              <div className={styles.relatedName}>Browse all systems &rarr;</div>
             </Link>
           </div>
           <AdSlot />
@@ -133,14 +133,14 @@ export default async function InterviewDetailPage({ params }: { params: Promise<
       {/* PREV/NEXT */}
       <div className={styles.nav}>
         {prev ? (
-          <Link href={`/interviews/${prev.slug}`} className={styles.navCard}>
+          <Link href={`/field-notes/${prev.slug}`} className={styles.navCard}>
             <span className={styles.navDir}>&larr; Previous</span>
             <span className={styles.navName}>{prev.name}</span>
             <span className={styles.navDesc}>{prev.role}</span>
           </Link>
         ) : <div />}
         {next ? (
-          <Link href={`/interviews/${next.slug}`} className={`${styles.navCard} ${styles.navRight}`}>
+          <Link href={`/field-notes/${next.slug}`} className={`${styles.navCard} ${styles.navRight}`}>
             <span className={styles.navDir}>Next &rarr;</span>
             <span className={styles.navName}>{next.name}</span>
             <span className={styles.navDesc}>{next.role}</span>

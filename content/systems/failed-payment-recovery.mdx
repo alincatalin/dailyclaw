@@ -9,6 +9,10 @@ difficulty: "Intermediate"
 tools: ["Stripe MCP", "Gmail MCP", "Claude Code"]
 contributor: "Alin Postolache"
 contributorSlug: "alin-postolache"
+complexity: "Medium"
+useCase: "Detect failed Stripe payments and send personalized recovery emails automatically"
+patterns: ["multi-tool-pipeline", "personalization-agent", "scheduled-agent"]
+tradeoffs: "High impact on revenue recovery but requires careful email tone tuning. Start with human review before auto-send."
 ---
 
 <StepCard number={1} label="Prerequisites" heading="Connect Stripe and Gmail MCP servers">

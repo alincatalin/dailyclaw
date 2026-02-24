@@ -1,0 +1,96 @@
+.header {
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+}
+
+.title {
+  font-family: var(--font-display), sans-serif;
+  font-size: 2.5rem;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.subtitle {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.content {
+  padding: 2.5rem 2rem;
+  max-width: 720px;
+}
+
+.description {
+  margin-bottom: 2.5rem;
+}
+
+.description p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.pillGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 3rem;
+}
+
+.pill {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  padding: 6px 14px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  cursor: default;
+  transition: all 0.15s;
+}
+
+.pill:hover {
+  background: var(--accent);
+  color: #000;
+}
+
+.comingSoon {
+  border: 1px solid var(--border);
+  padding: 2rem;
+  background: var(--surface);
+}
+
+.comingSoonLabel {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  color: var(--accent3);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.comingSoon p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.browseLink {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: opacity 0.15s;
+}
+
+.browseLink:hover {
+  opacity: 0.8;
+}

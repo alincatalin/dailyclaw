@@ -1,7 +1,7 @@
 import Link from "next/link";
-import styles from "./InterviewCard.module.css";
+import styles from "./FieldNoteCard.module.css";
 
-interface InterviewCardProps {
+interface FieldNoteCardProps {
   number: number;
   name: string;
   handle: string;
@@ -13,14 +13,14 @@ interface InterviewCardProps {
   config?: string;
 }
 
-export default function InterviewCard({
+export default function FieldNoteCard({
   number, name, handle, role, pullQuote, tools, slug, wide, config,
-}: InterviewCardProps) {
+}: FieldNoteCardProps) {
   const num = String(number).padStart(2, "0");
 
   if (wide) {
     return (
-      <Link href={`/interviews/${slug}`} className={`${styles.card} ${styles.wide}`}>
+      <Link href={`/field-notes/${slug}`} className={`${styles.card} ${styles.wide}`}>
         <div className={styles.wideLeft}>
           <div className={styles.cardNumber}>{num}</div>
           <div className={styles.cardTag}>{role}</div>
@@ -49,7 +49,7 @@ export default function InterviewCard({
   }
 
   return (
-    <Link href={`/interviews/${slug}`} className={styles.card}>
+    <Link href={`/field-notes/${slug}`} className={styles.card}>
       <div className={styles.cardNumber}>{num}</div>
       <div className={styles.cardTag}>{role}</div>
       <h2 className={styles.cardName}>

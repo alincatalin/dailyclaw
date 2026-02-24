@@ -11,18 +11,16 @@ export default function Header() {
         <span className={styles.statusPill}>BETA</span>
       </div>
       <div className={styles.center}>
-        workflows &times; automations &times; OpenClaw
+        systems &times; patterns &times; OpenClaw
       </div>
       <div className={styles.right}>
         <nav className={styles.nav}>
-          <Link href="/interviews">Interviews</Link>
-          <Link href="/tools">Tools</Link>
-          <Link href="/recipes">Recipes</Link>
+          <Link href="/systems">Systems</Link>
+          <Link href="/patterns">Patterns</Link>
+          <Link href="/stack">Stack</Link>
+          <Link href="/field-notes">Field Notes</Link>
           <Link href="/about">About</Link>
         </nav>
-        <Link href="/#submit" className={styles.submitBtn}>
-          Submit Setup
-        </Link>
       </div>
     </header>
   );

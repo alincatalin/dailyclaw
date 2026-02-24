@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import { Interview, Tool, Recipe } from "./types";
+import { System, FieldNote, StackItem } from "./types";
 
 const contentDir = path.join(process.cwd(), "content");
 
@@ -19,26 +19,26 @@ function readMdxFiles(dir: string) {
     });
 }
 
-export function getInterviews(): Interview[] {
-  return readMdxFiles("interviews") as Interview[];
+export function getSystems(): System[] {
+  return readMdxFiles("systems") as System[];
 }
 
-export function getInterview(slug: string): Interview | undefined {
-  return getInterviews().find((i) => i.slug === slug);
+export function getSystem(slug: string): System | undefined {
+  return getSystems().find((s) => s.slug === slug);
 }
 
-export function getTools(): Tool[] {
-  return readMdxFiles("tools") as Tool[];
+export function getFieldNotes(): FieldNote[] {
+  return readMdxFiles("field-notes") as FieldNote[];
 }
 
-export function getTool(slug: string): Tool | undefined {
-  return getTools().find((t) => t.slug === slug);
+export function getFieldNote(slug: string): FieldNote | undefined {
+  return getFieldNotes().find((f) => f.slug === slug);
 }
 
-export function getRecipes(): Recipe[] {
-  return readMdxFiles("recipes") as Recipe[];
+export function getStackItems(): StackItem[] {
+  return readMdxFiles("stack") as StackItem[];
 }
 
-export function getRecipe(slug: string): Recipe | undefined {
-  return getRecipes().find((r) => r.slug === slug);
+export function getStackItem(slug: string): StackItem | undefined {
+  return getStackItems().find((s) => s.slug === slug);
 }

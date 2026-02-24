@@ -1,63 +1,63 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getTool, getTools } from "@/lib/content";
+import { getStackItem, getStackItems } from "@/lib/content";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import MdxContent from "@/components/content/MdxContent";
 import AdSlot from "@/components/ui/AdSlot";
-import styles from "./tool-detail.module.css";
+import styles from "./stack-detail.module.css";
 
 export async function generateStaticParams() {
-  return getTools().map((t) => ({ slug: t.slug }));
+  return getStackItems().map((t) => ({ slug: t.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const tool = getTool(slug);
-  if (!tool) return {};
+  const item = getStackItem(slug);
+  if (!item) return {};
   return {
-    title: `${tool.title} — DailyClaw Tools`,
-    description: tool.description,
+    title: `${item.title} — DailyClaw Stack`,
+    description: item.description,
   };
 }
 
-export default async function ToolDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function StackDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const tool = getTool(slug);
-  if (!tool) notFound();
+  const item = getStackItem(slug);
+  if (!item) notFound();
 
-  const allTools = getTools();
-  const related = allTools.filter((t) => t.slug !== slug && t.category === tool.category).slice(0, 4);
+  const allItems = getStackItems();
+  const related = allItems.filter((t) => t.slug !== slug && t.category === item.category).slice(0, 4);
 
   return (
     <>
       <Breadcrumb items={[
         { label: "Home", href: "/" },
-        { label: "Tools", href: "/tools" },
-        { label: tool.title },
+        { label: "Stack", href: "/stack" },
+        { label: item.title },
       ]} />
 
-      {/* TOOL HERO */}
+      {/* STACK ITEM HERO */}
       <div className={styles.hero}>
         <div className={`${styles.heroLeft} anim anim-d1`}>
           <div>
             <div className={styles.badge}>
-              <div className={styles.iconLarge}>{tool.icon}</div>
+              <div className={styles.iconLarge}>{item.icon}</div>
               <div className={styles.typeStack}>
-                <span className={styles.typePill}>{tool.type}</span>
-                <span className={styles.license}>{tool.license}</span>
+                <span className={styles.typePill}>{item.type}</span>
+                <span className={styles.license}>{item.license}</span>
               </div>
             </div>
 
             <h1 className={styles.toolName}>
-              {tool.title.split(" ")[0].toUpperCase()}
-              <em>{tool.title.split(" ").slice(1).join(" ")}</em>
+              {item.title.split(" ")[0].toUpperCase()}
+              <em>{item.title.split(" ").slice(1).join(" ")}</em>
             </h1>
 
-            <p className={styles.tagline}>{tool.description}</p>
+            <p className={styles.tagline}>{item.description}</p>
           </div>
 
           <div className={styles.installStrip}>
-            <span className={styles.installCmd}>{tool.installCmd}</span>
+            <span className={styles.installCmd}>{item.installCmd}</span>
           </div>
         </div>
 
@@ -66,15 +66,15 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
             <div className={styles.sidebarLabel}>At a glance</div>
             <div className={styles.statRow}>
               <div className={styles.statItem}>
-                <span className={styles.statNum}>{tool.makers}</span>
-                <span className={styles.statLabelSm}>Makers use this</span>
+                <span className={styles.statNum}>{item.makers}</span>
+                <span className={styles.statLabelSm}>Builders use this</span>
               </div>
               <div className={styles.statItem}>
-                <span className={styles.statNum}>{tool.capabilities.length}</span>
+                <span className={styles.statNum}>{item.capabilities.length}</span>
                 <span className={styles.statLabelSm}>Capabilities</span>
               </div>
               <div className={styles.statItem}>
-                <span className={styles.statNum}>{tool.version}</span>
+                <span className={styles.statNum}>{item.version}</span>
                 <span className={styles.statLabelSm}>Latest</span>
               </div>
             </div>
@@ -83,7 +83,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
           <div>
             <div className={styles.sidebarLabel}>Compatibility</div>
             <div className={styles.compatGrid}>
-              {tool.compatibility.map((c) => (
+              {item.compatibility.map((c) => (
                 <div key={c.name} className={styles.compatItem}>
                   <span className={styles.compatName}>{c.name}</span>
                   <span className={`${styles.compatStatus} ${styles[c.status]}`}>
@@ -104,7 +104,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
             <div className={styles.blockLabel}>Capabilities</div>
             <h2 className={styles.blockTitle}>WHAT IT DOES</h2>
             <div className={styles.capGrid}>
-              {tool.capabilities.map((cap) => (
+              {item.capabilities.map((cap) => (
                 <div key={cap} className={styles.capItem}>
                   <span className={styles.capName}>{cap}</span>
                 </div>
@@ -114,7 +114,7 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
 
           {/* MDX CONTENT */}
           <div className={styles.sectionBlock}>
-            <MdxContent source={tool.content} />
+            <MdxContent source={item.content} />
           </div>
         </div>
 
@@ -136,20 +136,20 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ slu
         </div>
       </div>
 
-      {/* RELATED TOOLS */}
+      {/* RELATED */}
       {related.length > 0 && (
         <div className={styles.similarSection}>
           <div className={styles.sectionHeaderRow}>
-            <h2 className={styles.sectionTitleLg}>SIMILAR TOOLS</h2>
-            <span className={styles.sectionSub}>&mdash; other {tool.category} integrations</span>
+            <h2 className={styles.sectionTitleLg}>SIMILAR STACK</h2>
+            <span className={styles.sectionSub}>&mdash; other {item.category} integrations</span>
           </div>
           <div className={styles.similarGrid}>
             {related.map((t) => (
-              <Link key={t.slug} href={`/tools/${t.slug}`} className={styles.similarCard}>
+              <Link key={t.slug} href={`/stack/${t.slug}`} className={styles.similarCard}>
                 <div className={styles.simIcon}>{t.icon}</div>
                 <div className={styles.simName}>{t.title}</div>
                 <div className={styles.simDesc}>{t.description}</div>
-                <div className={styles.simCount}>&nearr; {t.makers} makers</div>
+                <div className={styles.simCount}>&nearr; {t.makers} builders</div>
               </Link>
             ))}
           </div>

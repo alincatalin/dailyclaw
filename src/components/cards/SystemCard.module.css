@@ -37,20 +37,37 @@
   color: var(--muted);
   line-height: 1.7;
   font-family: var(--font-mono), monospace;
+  margin-bottom: 0.75rem;
 }
 
-.stepDots {
+.patternPills {
   display: flex;
+  flex-wrap: wrap;
   gap: 4px;
-  margin-top: 1rem;
+  margin-bottom: 0.5rem;
 }
 
-.dot {
-  width: 20px;
-  height: 3px;
-  background: var(--border);
+.pill {
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  padding: 2px 8px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  letter-spacing: 0.05em;
 }
 
-.dot.active {
-  background: var(--accent);
+.toolChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: auto;
+}
+
+.toolChip {
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  padding: 2px 6px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  letter-spacing: 0.05em;
 }

@@ -4,7 +4,7 @@ import styles from "./about.module.css";
 
 export const metadata: Metadata = {
   title: "About DailyClaw",
-  description: "DailyClaw is the go-to resource for OpenClaw workflows, automations, and builder spotlights.",
+  description: "DailyClaw is the systems library for people using OpenClaw to design, build, and ship agent architectures.",
 };
 
 export default function AboutPage() {
@@ -19,15 +19,16 @@ export default function AboutPage() {
             <em>DailyClaw</em>
           </h1>
           <p className={styles.subtitle}>
-            The go-to resource for OpenClaw workflows, automations, and builder spotlights. See what people build. Steal the configs.
+            The systems library for people using OpenClaw to design, build, and ship agent architectures. Systems thinking, composability, architecture-first.
           </p>
         </div>
         <div className={styles.heroSidebar}>
           <div className={styles.sidebarLabel}>Quick links</div>
           <div className={styles.quickLinks}>
-            <Link href="/interviews">Interviews</Link>
-            <Link href="/tools">Tools Directory</Link>
-            <Link href="/recipes">Recipes</Link>
+            <Link href="/systems">Systems</Link>
+            <Link href="/patterns">Patterns</Link>
+            <Link href="/stack">Stack</Link>
+            <Link href="/field-notes">Field Notes</Link>
             <Link href="/advertise">Advertise</Link>
           </div>
         </div>
@@ -39,24 +40,24 @@ export default function AboutPage() {
           <h2 className={styles.sectionTitle}>THE MISSION</h2>
           <div className={styles.prose}>
             <p>
-              OpenClaw is changing how people interact with AI &mdash; but the space is moving fast and most builders are figuring things out alone.
+              OpenClaw is changing how people build with AI &mdash; but the space is moving fast and most builders are designing architectures alone.
             </p>
             <p>
-              DailyClaw bridges the gap. We interview builders shipping real workflows with OpenClaw. We catalog the tools and MCP servers that power those workflows. And we publish copy-paste recipes you can run today.
+              DailyClaw bridges the gap. We document reference systems that builders ship with OpenClaw. We catalog the patterns that make those systems composable. We curate the stack that powers them. And we publish field notes from builders in the trenches.
             </p>
             <p>
-              No hype. No theory. Tested workflows from people who ship.
+              No hype. No theory. Tested architectures from people who ship.
             </p>
           </div>
         </div>
         <div className={styles.sectionSidebar}>
           <div className={styles.statBlock}>
-            <div className={styles.statVal}>3</div>
+            <div className={styles.statVal}>4</div>
             <div className={styles.statKey}>Content pillars</div>
           </div>
           <div className={styles.statBlock}>
             <div className={styles.statVal}>10+</div>
-            <div className={styles.statKey}>Tools catalogued</div>
+            <div className={styles.statKey}>Stack items catalogued</div>
           </div>
           <div className={styles.statBlock}>
             <div className={styles.statVal}>100%</div>
@@ -69,27 +70,35 @@ export default function AboutPage() {
       <div className={styles.pillars}>
         <div className={styles.pillar}>
           <div className={styles.pillarNum}>01</div>
-          <h3 className={styles.pillarTitle}>Interviews</h3>
+          <h3 className={styles.pillarTitle}>Systems</h3>
           <p className={styles.pillarDesc}>
-            Builder spotlights. We dig into their OpenClaw setups &mdash; which tools they wire up, what they automate, what breaks, and what saves them hours.
+            Reference agent architectures. Production-ready systems with tested configs, tools, patterns, and trade-offs documented.
           </p>
-          <Link href="/interviews" className={styles.pillarLink}>Browse interviews &rarr;</Link>
+          <Link href="/systems" className={styles.pillarLink}>Browse systems &rarr;</Link>
         </div>
         <div className={styles.pillar}>
           <div className={styles.pillarNum}>02</div>
-          <h3 className={styles.pillarTitle}>Tools</h3>
+          <h3 className={styles.pillarTitle}>Patterns</h3>
           <p className={styles.pillarDesc}>
-            MCP servers, integrations, and tooling that power OpenClaw workflows. Install commands, compatibility, and real-world usage.
+            Reusable architecture building blocks. Event-driven, human-in-the-loop, multi-tool pipelines &mdash; the composable pieces behind every system.
           </p>
-          <Link href="/tools" className={styles.pillarLink}>Browse tools &rarr;</Link>
+          <Link href="/patterns" className={styles.pillarLink}>Browse patterns &rarr;</Link>
         </div>
         <div className={styles.pillar}>
           <div className={styles.pillarNum}>03</div>
-          <h3 className={styles.pillarTitle}>Recipes</h3>
+          <h3 className={styles.pillarTitle}>Stack</h3>
           <p className={styles.pillarDesc}>
-            Step-by-step workflow guides you can copy-paste and run. Automations built on OpenClaw with tested configs.
+            MCP servers, integrations, and tooling that power OpenClaw systems. Install commands, compatibility, and real-world usage.
           </p>
-          <Link href="/recipes" className={styles.pillarLink}>Browse recipes &rarr;</Link>
+          <Link href="/stack" className={styles.pillarLink}>Browse stack &rarr;</Link>
+        </div>
+        <div className={styles.pillar}>
+          <div className={styles.pillarNum}>04</div>
+          <h3 className={styles.pillarTitle}>Field Notes</h3>
+          <p className={styles.pillarDesc}>
+            Builder deep-dives. We dig into their OpenClaw setups &mdash; which tools they wire up, what they automate, what breaks, and what saves them hours.
+          </p>
+          <Link href="/field-notes" className={styles.pillarLink}>Browse field notes &rarr;</Link>
         </div>
       </div>
 
@@ -99,7 +108,7 @@ export default function AboutPage() {
           <h2 className={styles.sectionTitle}>THE MAKER</h2>
           <div className={styles.prose}>
             <p>
-              DailyClaw is built by <strong>Alin Postolache</strong> &mdash; a builder and AI workflow enthusiast based in Europe. After spending months building automations with OpenClaw, Alin realized the community needed a central resource for workflows, setups, and real use cases.
+              DailyClaw is built by <strong>Alin Postolache</strong> &mdash; a builder and AI architect based in Europe. After spending months building agent systems with OpenClaw, Alin realized the community needed a structured reference for architectures, patterns, and real use cases.
             </p>
             <p>
               Want to get in touch? <Link href="/#submit" className={styles.inlineLink}>Submit your setup</Link> or reach out on social.

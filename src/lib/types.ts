@@ -55,3 +55,24 @@ export interface Recipe {
   contributorSlug: string;
   content: string;
 }
+
+export interface System {
+  title: string;
+  slug: string;
+  category: string;
+  steps: number;
+  setupTime: string;
+  timeSaved: string;
+  difficulty: string;
+  tools: string[];
+  contributor: string;
+  contributorSlug: string;
+  complexity: string;
+  useCase: string;
+  patterns: string[];
+  tradeoffs: string;
+  content: string;
+}
+
+export type FieldNote = Interview;
+export type StackItem = Tool;

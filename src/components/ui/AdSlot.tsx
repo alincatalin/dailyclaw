@@ -11,7 +11,7 @@ export default function AdSlot({ variant = "sidebar" }: AdSlotProps) {
       <div className={styles.adLabel}>Sponsor</div>
       <div className={styles.adContent}>
         <div className={styles.adPlaceholder}>Your ad here</div>
-        <p className={styles.adText}>Reach OpenClaw builders and developers.</p>
+        <p className={styles.adText}>Reach OpenClaw builders and system architects.</p>
         <Link href="/advertise" className={styles.adLink}>Learn more &rarr;</Link>
       </div>
     </div>

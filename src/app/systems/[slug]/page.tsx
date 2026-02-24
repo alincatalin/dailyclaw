@@ -1,58 +1,65 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getRecipe, getRecipes } from "@/lib/content";
+import { getSystem, getSystems } from "@/lib/content";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import MdxContent from "@/components/content/MdxContent";
 import AdSlot from "@/components/ui/AdSlot";
-import styles from "./recipe-detail.module.css";
+import styles from "./system-detail.module.css";
 
 export async function generateStaticParams() {
-  return getRecipes().map((r) => ({ slug: r.slug }));
+  return getSystems().map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const recipe = getRecipe(slug);
-  if (!recipe) return {};
+  const system = getSystem(slug);
+  if (!system) return {};
   return {
-    title: `${recipe.title} — DailyClaw Recipes`,
-    description: `${recipe.category} recipe with ${recipe.steps} steps. ${recipe.difficulty} difficulty.`,
+    title: `${system.title} — DailyClaw Systems`,
+    description: system.useCase || `${system.category} system. ${system.difficulty} difficulty.`,
   };
 }
 
-export default async function RecipeDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function SystemDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const recipe = getRecipe(slug);
-  if (!recipe) notFound();
+  const system = getSystem(slug);
+  if (!system) notFound();
 
-  const allRecipes = getRecipes();
-  const related = allRecipes.filter((r) => r.slug !== slug).slice(0, 3);
+  const allSystems = getSystems();
+  const related = allSystems.filter((s) => s.slug !== slug).slice(0, 3);
 
   return (
     <>
       <Breadcrumb items={[
         { label: "Home", href: "/" },
-        { label: "Recipes", href: "/recipes" },
-        { label: recipe.title },
+        { label: "Systems", href: "/systems" },
+        { label: system.title },
       ]} />
 
-      {/* RECIPE HERO */}
+      {/* SYSTEM HERO */}
       <div className={styles.hero}>
         <div className={`${styles.heroMain} anim anim-d1`}>
           <div>
-            <div className={styles.category}>{recipe.category}</div>
+            <div className={styles.category}>{system.category}</div>
             <h1 className={styles.title}>
-              {recipe.title.split(" ")[0].toUpperCase()}
-              <em>{recipe.title.split(" ").slice(1).join(" ")}</em>
+              {system.title.split(" ")[0].toUpperCase()}
+              <em>{system.title.split(" ").slice(1).join(" ")}</em>
             </h1>
             <div className={styles.pills}>
-              <span className={`${styles.rpill} ${styles.rpillHl}`}>{recipe.category} &middot; {recipe.steps} steps</span>
-              <span className={styles.rpill}>~{recipe.setupTime} setup</span>
-              <span className={styles.rpill}>{recipe.difficulty}</span>
-              {recipe.tools.map((t) => (
+              <span className={`${styles.rpill} ${styles.rpillHl}`}>{system.category} &middot; {system.complexity || system.difficulty}</span>
+              <span className={styles.rpill}>~{system.setupTime} setup</span>
+              <span className={styles.rpill}>{system.difficulty}</span>
+              {system.tools.map((t) => (
                 <span key={t} className={styles.rpill}>{t}</span>
               ))}
             </div>
+            {system.patterns && system.patterns.length > 0 && (
+              <div className={styles.patternPills}>
+                {system.patterns.map((p) => (
+                  <Link key={p} href="/patterns" className={styles.patternPill}>{p}</Link>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
@@ -61,32 +68,39 @@ export default async function RecipeDetailPage({ params }: { params: Promise<{ s
             <div className={styles.sidebarLabel}>At a glance</div>
             <div className={styles.metaGrid}>
               <div className={styles.metaItem}>
-                <span className={styles.metaVal}>{recipe.steps}</span>
+                <span className={styles.metaVal}>{system.steps}</span>
                 <span className={styles.metaKey}>Steps</span>
               </div>
               <div className={styles.metaItem}>
-                <span className={styles.metaVal}>{recipe.setupTime}</span>
+                <span className={styles.metaVal}>{system.setupTime}</span>
                 <span className={styles.metaKey}>Setup time</span>
               </div>
               <div className={styles.metaItem}>
-                <span className={styles.metaVal}>{recipe.timeSaved}</span>
+                <span className={styles.metaVal}>{system.timeSaved}</span>
                 <span className={styles.metaKey}>Saved / day</span>
               </div>
               <div className={styles.metaItem}>
-                <span className={styles.metaVal}>{recipe.difficulty.charAt(0)}</span>
-                <span className={styles.metaKey}>Difficulty</span>
+                <span className={styles.metaVal}>{system.complexity ? system.complexity.charAt(0) : system.difficulty.charAt(0)}</span>
+                <span className={styles.metaKey}>Complexity</span>
               </div>
             </div>
           </div>
 
-          {recipe.contributor && (
+          {system.tradeoffs && (
+            <div>
+              <div className={styles.sidebarLabel}>Trade-offs</div>
+              <p className={styles.tradeoffs}>{system.tradeoffs}</p>
+            </div>
+          )}
+
+          {system.contributor && (
             <div>
               <div className={styles.sidebarLabel}>Contributed by</div>
               <div className={styles.attribution}>
-                {recipe.contributorSlug ? (
-                  <Link href={`/interviews/${recipe.contributorSlug}`}>{recipe.contributor}</Link>
+                {system.contributorSlug ? (
+                  <Link href={`/field-notes/${system.contributorSlug}`}>{system.contributor}</Link>
                 ) : (
-                  <span>{recipe.contributor}</span>
+                  <span>{system.contributor}</span>
                 )}
               </div>
             </div>
@@ -98,17 +112,17 @@ export default async function RecipeDetailPage({ params }: { params: Promise<{ s
       <div className={styles.stepsSection}>
         <div className={styles.stepsMain}>
           <div className={styles.stepsHeader}>
-            <h2 className={styles.stepsTitle}>THE RECIPE</h2>
+            <h2 className={styles.stepsTitle}>THE SYSTEM</h2>
             <span className={styles.stepsSubtitle}>&mdash; follow these steps in order</span>
           </div>
-          <MdxContent source={recipe.content} />
+          <MdxContent source={system.content} />
         </div>
 
         <div className={styles.stepsSidebar}>
           <div>
             <div className={styles.sidebarLabel}>Tools used</div>
             <div className={styles.prereqList}>
-              {recipe.tools.map((tool) => (
+              {system.tools.map((tool) => (
                 <div key={tool} className={styles.prereqItem}>
                   <span className={styles.prereqDot} />
                   <span>{tool}</span>
@@ -128,10 +142,10 @@ export default async function RecipeDetailPage({ params }: { params: Promise<{ s
             <span className={styles.stepsSubtitle}>&mdash; you might also like these</span>
           </div>
           <div className={styles.relatedGrid}>
-            {related.map((r) => (
-              <Link key={r.slug} href={`/recipes/${r.slug}`} className={styles.relatedCard}>
-                <div className={styles.relatedType}>{r.category} &middot; {r.steps} steps</div>
-                <div className={styles.relatedName}>{r.title}</div>
+            {related.map((s) => (
+              <Link key={s.slug} href={`/systems/${s.slug}`} className={styles.relatedCard}>
+                <div className={styles.relatedType}>{s.category} &middot; {s.complexity || s.difficulty}</div>
+                <div className={styles.relatedName}>{s.title}</div>
               </Link>
             ))}
           </div>

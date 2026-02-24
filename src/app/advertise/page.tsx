@@ -30,7 +30,7 @@ export default function AdvertisePage() {
               <span className={styles.statKey}>Technical audience</span>
             </div>
             <div className={styles.statItem}>
-              <span className={styles.statVal}>3</span>
+              <span className={styles.statVal}>4</span>
               <span className={styles.statKey}>Content verticals</span>
             </div>
             <div className={styles.statItem}>
@@ -70,7 +70,7 @@ export default function AdvertisePage() {
         <div className={styles.whyCard}>
           <div className={styles.whyIcon}>04</div>
           <h3>Multiple touchpoints</h3>
-          <p>Your brand appears across interviews, tool pages, recipes, and the newsletter &mdash; reinforced naturally.</p>
+          <p>Your brand appears across systems, stack pages, field notes, and the newsletter &mdash; reinforced naturally.</p>
         </div>
       </div>
 
@@ -86,7 +86,7 @@ export default function AdvertisePage() {
           <div className={styles.placementPreview}>
             <div className={styles.previewBox}>300 x 250</div>
           </div>
-          <p>Appears on all interview, tool, and recipe detail pages. Sticky position, always visible while reading.</p>
+          <p>Appears on all system, stack, and field note detail pages. Sticky position, always visible while reading.</p>
         </div>
         <div className={styles.placement}>
           <div className={styles.placementLabel}>Newsletter sponsor</div>
@@ -100,7 +100,7 @@ export default function AdvertisePage() {
           <div className={styles.placementPreview}>
             <div className={styles.previewBoxAccent}>Featured</div>
           </div>
-          <p>Your tool featured at the top of the tools directory with a &ldquo;Sponsored&rdquo; badge. Includes full tool page.</p>
+          <p>Your tool featured at the top of the stack directory with a &ldquo;Sponsored&rdquo; badge. Includes full stack page.</p>
         </div>
       </div>
 
@@ -133,9 +133,9 @@ export default function AdvertisePage() {
           </div>
           <ul className={styles.packageFeatures}>
             <li>Everything in Starter</li>
-            <li>Featured tool listing with full page</li>
+            <li>Featured stack listing with full page</li>
             <li>2 newsletter mentions / month</li>
-            <li>Sponsored recipe or interview</li>
+            <li>Sponsored system or field note</li>
             <li>Detailed analytics dashboard</li>
           </ul>
           <Link href="mailto:advertise@dailyclaw.dev" className={styles.packageCtaPrimary}>Get started</Link>
