@@ -3,6 +3,8 @@ import { getFieldNotes, getStackItems, getSystems } from "@/lib/content";
 import FieldNoteCard from "@/components/cards/FieldNoteCard";
 import StackCard from "@/components/cards/StackCard";
 import SystemCard from "@/components/cards/SystemCard";
+import NewsletterForm from "@/components/forms/NewsletterForm";
+import SubmitSystemForm from "@/components/forms/SubmitSystemForm";
 import styles from "./home.module.css";
 
 export default function HomePage() {
@@ -155,47 +157,10 @@ export default function HomePage() {
       </div>
 
       {/* NEWSLETTER */}
-      <div className={styles.newsletter}>
-        <div className={styles.newsletterLeft}>
-          <h2>STAY IN <em>the loop</em></h2>
-          <p>Systems, patterns, and stack updates. No spam.</p>
-        </div>
-        <div>
-          <div className={styles.newsletterForm}>
-            <input className={styles.newsletterInput} type="email" placeholder="your@email.com" />
-            <button className={styles.newsletterBtn}>SUBSCRIBE</button>
-          </div>
-          <div className={styles.newsletterNote}>Free. Unsubscribe anytime.</div>
-        </div>
-      </div>
+      <NewsletterForm />
 
       {/* SUBMIT SECTION */}
-      <div className={styles.submitSection} id="submit">
-        <div className={styles.submitLeft}>
-          <h2>SHARE YOUR <span>SYSTEM.</span></h2>
-          <p>Built something with OpenClaw? We want to document your architecture &mdash; the tools, the patterns, and the results.</p>
-          <p>No follower count required. Just a system worth sharing.</p>
-        </div>
-        <div className={styles.submitRight}>
-          <div className={styles.formGroup}>
-            <label className={styles.formLabel}>Your name / handle</label>
-            <input className={styles.formInput} type="text" placeholder="e.g. sara_builds" />
-          </div>
-          <div className={styles.formGroup}>
-            <label className={styles.formLabel}>What do you build?</label>
-            <input className={styles.formInput} type="text" placeholder="e.g. Indie SaaS founder, Berlin" />
-          </div>
-          <div className={styles.formGroup}>
-            <label className={styles.formLabel}>Describe the system</label>
-            <textarea className={styles.formInput} placeholder="What does it do, what tools does it use, what patterns does it follow..." />
-          </div>
-          <div className={styles.formGroup}>
-            <label className={styles.formLabel}>Stack used (MCP servers, APIs, scripts)</label>
-            <input className={styles.formInput} type="text" placeholder="e.g. OpenClaw, Stripe MCP, GitHub MCP, cron" />
-          </div>
-          <button className={styles.ctaBig}>SUBMIT MY SYSTEM &rarr;</button>
-        </div>
-      </div>
+      <SubmitSystemForm />
     </>
   );
 }
