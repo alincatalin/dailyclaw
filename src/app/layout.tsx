@@ -84,6 +84,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script async src="https://tally.so/widgets/embed.js"></script>
+      </head>
       <body className={`${spaceMono.variable} ${bebasNeue.variable} ${dmSerifDisplay.variable} ${ibmPlexMono.variable}`}
         style={{ fontFamily: "var(--font-body-mono), monospace" }}>
         <MixpanelProvider />
