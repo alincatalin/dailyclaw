@@ -1,11 +1,11 @@
-import { getFieldNotes, getStackItems, getSystems } from "@/lib/content";
+import { getFieldNotes, getStackItems, getBlueprints } from "@/lib/content";
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dailyclaw.dev";
 
-  const systems = getSystems().map((s) => ({
-    url: `${baseUrl}/systems/${s.slug}`,
+  const blueprints = getBlueprints().map((b) => ({
+    url: `${baseUrl}/blueprints/${b.slug}`,
     lastModified: new Date(),
   }));
 
@@ -21,13 +21,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     { url: baseUrl, lastModified: new Date() },
-    { url: `${baseUrl}/systems`, lastModified: new Date() },
+    { url: `${baseUrl}/blueprints`, lastModified: new Date() },
     { url: `${baseUrl}/patterns`, lastModified: new Date() },
     { url: `${baseUrl}/stack`, lastModified: new Date() },
     { url: `${baseUrl}/field-notes`, lastModified: new Date() },
     { url: `${baseUrl}/about`, lastModified: new Date() },
     { url: `${baseUrl}/advertise`, lastModified: new Date() },
-    ...systems,
+    ...blueprints,
     ...stackItems,
     ...fieldNotes,
   ];

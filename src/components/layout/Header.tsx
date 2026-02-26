@@ -11,11 +11,11 @@ export default function Header() {
         <span className={styles.statusPill}>BETA</span>
       </div>
       <div className={styles.center}>
-        systems &times; patterns &times; OpenClaw
+        blueprints &times; patterns &times; OpenClaw
       </div>
       <div className={styles.right}>
         <nav className={styles.nav}>
-          <Link href="/systems">Systems</Link>
+          <Link href="/blueprints">Blueprints</Link>
           <Link href="/patterns">Patterns</Link>
           <Link href="/stack">Stack</Link>
           <Link href="/field-notes">Field Notes</Link>

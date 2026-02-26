@@ -37,7 +37,7 @@ export default function NewsletterForm() {
     <div className={styles.newsletter}>
       <div className={styles.newsletterLeft}>
         <h2>STAY IN <em>the loop</em></h2>
-        <p>New systems, MCP tools, and builder interviews — straight to your inbox every week.</p>
+        <p>New blueprints, MCP tools, and builder interviews — straight to your inbox every week.</p>
       </div>
       <div>
         <form className={styles.newsletterForm} onSubmit={handleSubmit}>

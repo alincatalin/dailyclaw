@@ -1,17 +1,17 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getSystems } from "@/lib/content";
+import { getBlueprints } from "@/lib/content";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import styles from "./patterns.module.css";
 
 export const metadata: Metadata = {
   title: "Patterns — DailyClaw",
-  description: "Reusable architecture patterns for building agent systems with OpenClaw. Event-driven, human-in-the-loop, multi-tool pipelines, and more.",
+  description: "Reusable architecture patterns for building agent blueprints with OpenClaw. Event-driven, human-in-the-loop, multi-tool pipelines, and more.",
 };
 
 export default function PatternsPage() {
-  const systems = getSystems();
-  const allPatterns = Array.from(new Set(systems.flatMap((s) => s.patterns || [])));
+  const blueprints = getBlueprints();
+  const allPatterns = Array.from(new Set(blueprints.flatMap((b) => b.patterns || [])));
 
   return (
     <>
@@ -28,10 +28,10 @@ export default function PatternsPage() {
       <div className={styles.content}>
         <div className={styles.description}>
           <p>
-            Patterns are the reusable building blocks behind every system. Each pattern describes an architecture approach &mdash; how agents coordinate, when humans intervene, how data flows between tools.
+            Patterns are the reusable building blocks behind every blueprint. Each pattern describes an architecture approach &mdash; how agents coordinate, when humans intervene, how data flows between tools.
           </p>
           <p>
-            We&apos;re documenting patterns extracted from real systems built by OpenClaw builders. This section is growing &mdash; each system references the patterns it uses.
+            We&apos;re documenting patterns extracted from real blueprints built by OpenClaw builders. This section is growing &mdash; each blueprint references the patterns it uses.
           </p>
         </div>
 
@@ -56,9 +56,9 @@ export default function PatternsPage() {
         <div className={styles.comingSoon}>
           <div className={styles.comingSoonLabel}>Coming soon</div>
           <p>
-            Full pattern documentation with diagrams, trade-offs, and example systems. Each pattern will link to the systems that implement it.
+            Full pattern documentation with diagrams, trade-offs, and example blueprints. Each pattern will link to the blueprints that implement it.
           </p>
-          <Link href="/systems" className={styles.browseLink}>Browse systems &rarr;</Link>
+          <Link href="/blueprints" className={styles.browseLink}>Browse blueprints &rarr;</Link>
         </div>
       </div>
     </>

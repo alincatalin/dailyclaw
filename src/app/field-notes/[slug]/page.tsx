@@ -121,9 +121,9 @@ export default async function FieldNoteDetailPage({ params }: { params: Promise<
         <div className={styles.contentSidebar}>
           <div>
             <div className={styles.sidebarLabel}>Related</div>
-            <Link href="/systems" className={styles.relatedLink}>
-              <div className={styles.relatedType}>Systems</div>
-              <div className={styles.relatedName}>Browse all systems &rarr;</div>
+            <Link href="/blueprints" className={styles.relatedLink}>
+              <div className={styles.relatedType}>Blueprints</div>
+              <div className={styles.relatedName}>Browse all blueprints &rarr;</div>
             </Link>
           </div>
           <AdSlot />

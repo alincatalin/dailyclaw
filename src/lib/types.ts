@@ -56,7 +56,7 @@ export interface Recipe {
   content: string;
 }
 
-export interface System {
+export interface Blueprint {
   title: string;
   slug: string;
   category: string;

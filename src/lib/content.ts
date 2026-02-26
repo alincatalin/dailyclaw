@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import { System, FieldNote, StackItem } from "./types";
+import { Blueprint, FieldNote, StackItem } from "./types";
 
 const contentDir = path.join(process.cwd(), "content");
 
@@ -19,12 +19,12 @@ function readMdxFiles(dir: string) {
     });
 }
 
-export function getSystems(): System[] {
-  return readMdxFiles("systems") as System[];
+export function getBlueprints(): Blueprint[] {
+  return readMdxFiles("blueprints") as Blueprint[];
 }
 
-export function getSystem(slug: string): System | undefined {
-  return getSystems().find((s) => s.slug === slug);
+export function getBlueprint(slug: string): Blueprint | undefined {
+  return getBlueprints().find((s) => s.slug === slug);
 }
 
 export function getFieldNotes(): FieldNote[] {

@@ -70,7 +70,7 @@ export default function AdvertisePage() {
         <div className={styles.whyCard}>
           <div className={styles.whyIcon}>04</div>
           <h3>Multiple touchpoints</h3>
-          <p>Your brand appears across systems, stack pages, field notes, and the newsletter &mdash; reinforced naturally.</p>
+          <p>Your brand appears across blueprints, stack pages, field notes, and the newsletter &mdash; reinforced naturally.</p>
         </div>
       </div>
 
@@ -86,7 +86,7 @@ export default function AdvertisePage() {
           <div className={styles.placementPreview}>
             <div className={styles.previewBox}>300 x 250</div>
           </div>
-          <p>Appears on all system, stack, and field note detail pages. Sticky position, always visible while reading.</p>
+          <p>Appears on all blueprint, stack, and field note detail pages. Sticky position, always visible while reading.</p>
         </div>
         <div className={styles.placement}>
           <div className={styles.placementLabel}>Newsletter sponsor</div>
@@ -135,7 +135,7 @@ export default function AdvertisePage() {
             <li>Everything in Starter</li>
             <li>Featured stack listing with full page</li>
             <li>2 newsletter mentions / month</li>
-            <li>Sponsored system or field note</li>
+            <li>Sponsored blueprint or field note</li>
             <li>Detailed analytics dashboard</li>
           </ul>
           <Link href="mailto:advertise@dailyclaw.dev" className={styles.packageCtaPrimary}>Get started</Link>

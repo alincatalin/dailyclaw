@@ -133,8 +133,8 @@
   text-transform: uppercase;
 }
 
-/* SYSTEMS SECTION */
-.systemsSection {
+/* BLUEPRINTS SECTION */
+.blueprintsSection {
   border-bottom: 1px solid var(--border);
   padding: 2rem;
   display: grid;
@@ -144,21 +144,21 @@
   background: var(--surface);
 }
 
-.systemsLeft h2 {
+.blueprintsLeft h2 {
   font-family: var(--font-display), sans-serif;
   font-size: clamp(3rem, 5vw, 5.5rem);
   line-height: 0.9;
   color: var(--text);
 }
 
-.systemsLeft h2 em {
+.blueprintsLeft h2 em {
   font-family: var(--font-serif), serif;
   font-style: italic;
   color: var(--accent);
   display: block;
 }
 
-.systemsLeft p {
+.blueprintsLeft p {
   font-size: 13px;
   color: var(--muted);
   margin-top: 1rem;
@@ -166,7 +166,7 @@
   line-height: 1.8;
 }
 
-.systemCards {
+.blueprintCards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
@@ -481,12 +481,12 @@ textarea.formInput {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .systemsSection {
+  .blueprintsSection {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
 
-  .systemCards {
+  .blueprintCards {
     grid-template-columns: 1fr;
   }
 

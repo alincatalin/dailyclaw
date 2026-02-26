@@ -5,7 +5,7 @@ import styles from "./stack.module.css";
 
 export const metadata = {
   title: "Stack — DailyClaw",
-  description: "MCP servers, tools, and integrations that power OpenClaw systems. Curated and categorized.",
+  description: "MCP servers, tools, and integrations that power OpenClaw blueprints. Curated and categorized.",
 };
 
 export default function StackPage() {

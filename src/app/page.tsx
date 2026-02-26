@@ -1,18 +1,18 @@
 import Link from "next/link";
-import { getFieldNotes, getStackItems, getSystems } from "@/lib/content";
+import { getFieldNotes, getStackItems, getBlueprints } from "@/lib/content";
 import FieldNoteCard from "@/components/cards/FieldNoteCard";
 import StackCard from "@/components/cards/StackCard";
-import SystemCard from "@/components/cards/SystemCard";
+import BlueprintCard from "@/components/cards/BlueprintCard";
 import NewsletterForm from "@/components/forms/NewsletterForm";
-import SubmitSystemForm from "@/components/forms/SubmitSystemForm";
+import SubmitBlueprintForm from "@/components/forms/SubmitBlueprintForm";
 import styles from "./home.module.css";
 
 export default function HomePage() {
   const fieldNotes = getFieldNotes();
   const stackItems = getStackItems();
-  const systems = getSystems();
+  const blueprints = getBlueprints();
 
-  const allPatterns = Array.from(new Set(systems.flatMap((s) => s.patterns || [])));
+  const allPatterns = Array.from(new Set(blueprints.flatMap((b) => b.patterns || [])));
 
   return (
     <>
@@ -21,20 +21,20 @@ export default function HomePage() {
         <div>
           <div className={`${styles.heroEyebrow} anim anim-d1`}>Build with OpenClaw.</div>
           <h1 className={`${styles.heroTitle} anim anim-d2`}>
-            THE SYSTEMS LIBRARY FOR
+            THE BLUEPRINTS LIBRARY FOR
             <em>OpenClaw builders</em>
           </h1>
           <p className={`${styles.heroSub} anim anim-d3`}>
-            Reference systems, architecture patterns, and the stack that powers them. Built by builders, for builders.
+            Reference blueprints, architecture patterns, and the stack that powers them. Built by builders, for builders.
           </p>
           <div className={`${styles.heroCta} anim anim-d3`}>
-            <Link href="/systems" className={styles.ctaPrimary}>Browse systems</Link>
+            <Link href="/blueprints" className={styles.ctaPrimary}>Browse blueprints</Link>
           </div>
         </div>
         <div className={`${styles.heroMeta} anim anim-d4`}>
           <div className={styles.heroStat}>
-            <span className={styles.statNum}>{systems.length}</span>
-            <span className={styles.statLabel}>Systems</span>
+            <span className={styles.statNum}>{blueprints.length}</span>
+            <span className={styles.statLabel}>Blueprints</span>
           </div>
           <div className={styles.heroStat}>
             <span className={styles.statNum}>{stackItems.length}</span>
@@ -47,34 +47,34 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SYSTEMS SECTION */}
-      <div className={styles.systemsSection}>
-        <div className={styles.systemsLeft}>
-          <h2>REFERENCE<em>systems</em></h2>
+      {/* BLUEPRINTS SECTION */}
+      <div className={styles.blueprintsSection}>
+        <div className={styles.blueprintsLeft}>
+          <h2>REFERENCE<em>blueprints</em></h2>
           <p>Production-ready agent architectures for OpenClaw. Tested configs, real results.</p>
           <br />
-          <Link href="/systems" className={styles.browseBtn}>Browse all systems</Link>
+          <Link href="/blueprints" className={styles.browseBtn}>Browse all blueprints</Link>
         </div>
-        <div className={styles.systemCards}>
-          {systems.length > 0 ? (
-            systems.slice(0, 3).map((system) => (
-              <SystemCard
-                key={system.slug}
-                category={system.category}
-                title={system.title}
-                description={system.content.slice(0, 120)}
-                slug={system.slug}
-                useCase={system.useCase}
-                complexity={system.complexity}
-                patterns={system.patterns}
-                tools={system.tools}
+        <div className={styles.blueprintCards}>
+          {blueprints.length > 0 ? (
+            blueprints.slice(0, 3).map((blueprint) => (
+              <BlueprintCard
+                key={blueprint.slug}
+                category={blueprint.category}
+                title={blueprint.title}
+                description={blueprint.content.slice(0, 120)}
+                slug={blueprint.slug}
+                useCase={blueprint.useCase}
+                complexity={blueprint.complexity}
+                patterns={blueprint.patterns}
+                tools={blueprint.tools}
               />
             ))
           ) : (
             <>
-              <SystemCard category="Workflow" title="Automated Issue Triage" description="Read new GitHub issues, check for dups, auto-label, draft first response." slug="" patterns={["event-driven", "human-in-the-loop"]} complexity="Low" />
-              <SystemCard category="Automation" title="Failed Payment Recovery" description="Monitor Stripe, detect failures, draft personalized recovery emails." slug="" patterns={["multi-tool-pipeline", "personalization-agent"]} complexity="Medium" />
-              <SystemCard category="Automation" title="Morning Standup Brief" description="Aggregate Linear, GitHub, Obsidian into a daily brief." slug="" patterns={["multi-source-aggregation", "scheduled-agent"]} complexity="Medium" />
+              <BlueprintCard category="Workflow" title="Automated Issue Triage" description="Read new GitHub issues, check for dups, auto-label, draft first response." slug="" patterns={["event-driven", "human-in-the-loop"]} complexity="Low" />
+              <BlueprintCard category="Automation" title="Failed Payment Recovery" description="Monitor Stripe, detect failures, draft personalized recovery emails." slug="" patterns={["multi-tool-pipeline", "personalization-agent"]} complexity="Medium" />
+              <BlueprintCard category="Automation" title="Morning Standup Brief" description="Aggregate Linear, GitHub, Obsidian into a daily brief." slug="" patterns={["multi-source-aggregation", "scheduled-agent"]} complexity="Medium" />
             </>
           )}
         </div>
@@ -96,7 +96,7 @@ export default function HomePage() {
       <div className={styles.stackSection}>
         <div className={styles.stackAside}>
           <h2>STACK</h2>
-          <p>Recently added MCP servers and integrations powering OpenClaw systems.</p>
+          <p>Recently added MCP servers and integrations powering OpenClaw blueprints.</p>
           <Link href="/stack" className={styles.soonPill}>Browse all {stackItems.length > 0 && `${stackItems.length}+`}</Link>
         </div>
         <div className={styles.stackGrid}>
@@ -150,8 +150,8 @@ export default function HomePage() {
         ) : (
           <>
             <FieldNoteCard number={1} name="Coming Soon" handle="dailyclaw" role="Builder" pullQuote="Our first field note is being prepared. Submit your workflow to be featured!" tools={["OpenClaw", "MCP Servers"]} slug="" />
-            <FieldNoteCard number={2} name="Your Name Here" handle="you" role="Builder" pullQuote="We're looking for builders to feature. Got a system worth sharing? Tell us about it." tools={["Your Tools"]} slug="" />
-            <FieldNoteCard number={3} name="Join Us" handle="submit" role="Builder" pullQuote="Share your OpenClaw system, tools, and the automations that save you hours." tools={["Submit"]} slug="" />
+            <FieldNoteCard number={2} name="Your Name Here" handle="you" role="Builder" pullQuote="We're looking for builders to feature. Got a blueprint worth sharing? Tell us about it." tools={["Your Tools"]} slug="" />
+            <FieldNoteCard number={3} name="Join Us" handle="submit" role="Builder" pullQuote="Share your OpenClaw blueprint, tools, and the automations that save you hours." tools={["Submit"]} slug="" />
           </>
         )}
       </div>
@@ -160,7 +160,7 @@ export default function HomePage() {
       <NewsletterForm />
 
       {/* SUBMIT SECTION */}
-      <SubmitSystemForm />
+      <SubmitBlueprintForm />
     </>
   );
 }

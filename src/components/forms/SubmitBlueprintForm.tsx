@@ -3,7 +3,7 @@
 import { useState } from "react";
 import styles from "@/app/home.module.css";
 
-export default function SubmitSystemForm() {
+export default function SubmitBlueprintForm() {
   const [form, setForm] = useState({
     nameHandle: "",
     whatYouBuild: "",
@@ -23,7 +23,7 @@ export default function SubmitSystemForm() {
     setStatus("loading");
 
     try {
-      const res = await fetch("/api/submit-system", {
+      const res = await fetch("/api/submit-blueprint", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -35,7 +35,7 @@ export default function SubmitSystemForm() {
       }
 
       setStatus("success");
-      setMessage("System submitted! We'll be in touch.");
+      setMessage("Blueprint submitted! We'll be in touch.");
       setForm({ nameHandle: "", whatYouBuild: "", systemDescription: "", stackUsed: "" });
     } catch (err) {
       setStatus("error");
@@ -47,9 +47,9 @@ export default function SubmitSystemForm() {
     return (
       <div className={styles.submitSection} id="submit">
         <div className={styles.submitLeft}>
-          <h2>SHARE YOUR <span>SYSTEM.</span></h2>
+          <h2>SHARE YOUR <span>BLUEPRINT.</span></h2>
           <p>Built something with OpenClaw? We want to document your architecture &mdash; the tools, the patterns, and the results.</p>
-          <p>No follower count required. Just a system worth sharing.</p>
+          <p>No follower count required. Just a blueprint worth sharing.</p>
         </div>
         <div className={styles.submitRight}>
           <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.95rem" }}>{message}</p>
@@ -61,9 +61,9 @@ export default function SubmitSystemForm() {
   return (
     <div className={styles.submitSection} id="submit">
       <div className={styles.submitLeft}>
-        <h2>SHARE YOUR <span>SYSTEM.</span></h2>
+        <h2>SHARE YOUR <span>BLUEPRINT.</span></h2>
         <p>Built something with OpenClaw? We want to document your architecture &mdash; the tools, the patterns, and the results.</p>
-        <p>No follower count required. Just a system worth sharing.</p>
+        <p>No follower count required. Just a blueprint worth sharing.</p>
       </div>
       <form className={styles.submitRight} onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
@@ -91,7 +91,7 @@ export default function SubmitSystemForm() {
           />
         </div>
         <div className={styles.formGroup}>
-          <label className={styles.formLabel}>Describe the system</label>
+          <label className={styles.formLabel}>Describe the blueprint</label>
           <textarea
             className={styles.formInput}
             placeholder="What does it do, what tools does it use, what patterns does it follow..."
@@ -114,7 +114,7 @@ export default function SubmitSystemForm() {
           />
         </div>
         <button className={styles.ctaBig} type="submit" disabled={status === "loading"}>
-          {status === "loading" ? "SUBMITTING..." : "SUBMIT MY SYSTEM →"}
+          {status === "loading" ? "SUBMITTING..." : "SUBMIT MY BLUEPRINT \u2192"}
         </button>
         {status === "error" && (
           <p style={{ color: "#ff4444", fontFamily: "var(--font-mono)", fontSize: "0.85rem", marginTop: "0.5rem" }}>

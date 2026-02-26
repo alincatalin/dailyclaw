@@ -33,11 +33,11 @@ const ibmPlexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "DailyClaw — The Systems Library for OpenClaw Builders",
+    default: "DailyClaw — The Blueprints Library for OpenClaw Builders",
     template: "%s | DailyClaw",
   },
-  description: "The systems library for people using OpenClaw to design, build, and ship agent architectures. Systems, patterns, stack, and field notes.",
-  keywords: ["OpenClaw", "AI agents", "Agent architecture", "MCP servers", "AI systems", "DailyClaw"],
+  description: "The blueprints library for people using OpenClaw to design, build, and ship agent architectures. Blueprints, patterns, stack, and field notes.",
+  keywords: ["OpenClaw", "AI agents", "Agent architecture", "MCP servers", "AI blueprints", "DailyClaw"],
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://dailyclaw.dev"),
   icons: {
     icon: [
@@ -49,16 +49,31 @@ export const metadata: Metadata = {
   },
   manifest: "/site.webmanifest",
   openGraph: {
-    title: "DailyClaw — The Systems Library for OpenClaw Builders",
-    description: "Reference systems, architecture patterns, and the stack that powers OpenClaw builders. Field notes from people who ship.",
+    title: "DailyClaw — The Blueprints Library for OpenClaw Builders",
+    description: "Reference blueprints, architecture patterns, and the stack that powers OpenClaw builders. Field notes from people who ship.",
     type: "website",
     locale: "en_US",
     siteName: "DailyClaw",
+    images: [
+      {
+        url: "/og-facebook.png",
+        width: 1200,
+        height: 630,
+        alt: "DailyClaw — The Blueprints Library for OpenClaw Builders",
+      },
+      {
+        url: "/og-linkedin.png",
+        width: 1200,
+        height: 627,
+        alt: "DailyClaw — The Blueprints Library for OpenClaw Builders",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "DailyClaw",
-    description: "The Systems Library for OpenClaw Builders",
+    description: "The Blueprints Library for OpenClaw Builders",
+    images: ["/og-twitter.png"],
   },
 };
 

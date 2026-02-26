@@ -4,7 +4,7 @@ import styles from "./about.module.css";
 
 export const metadata: Metadata = {
   title: "About DailyClaw",
-  description: "DailyClaw is the systems library for people using OpenClaw to design, build, and ship agent architectures.",
+  description: "DailyClaw is the blueprints library for people using OpenClaw to design, build, and ship agent architectures.",
 };
 
 export default function AboutPage() {
@@ -19,13 +19,13 @@ export default function AboutPage() {
             <em>DailyClaw</em>
           </h1>
           <p className={styles.subtitle}>
-            The systems library for people using OpenClaw to design, build, and ship agent architectures. Systems thinking, composability, architecture-first.
+            The blueprints library for people using OpenClaw to design, build, and ship agent architectures. Blueprints, composability, architecture-first.
           </p>
         </div>
         <div className={styles.heroSidebar}>
           <div className={styles.sidebarLabel}>Quick links</div>
           <div className={styles.quickLinks}>
-            <Link href="/systems">Systems</Link>
+            <Link href="/blueprints">Blueprints</Link>
             <Link href="/patterns">Patterns</Link>
             <Link href="/stack">Stack</Link>
             <Link href="/field-notes">Field Notes</Link>
@@ -43,7 +43,7 @@ export default function AboutPage() {
               OpenClaw is changing how people build with AI &mdash; but the space is moving fast and most builders are designing architectures alone.
             </p>
             <p>
-              DailyClaw bridges the gap. We document reference systems that builders ship with OpenClaw. We catalog the patterns that make those systems composable. We curate the stack that powers them. And we publish field notes from builders in the trenches.
+              DailyClaw bridges the gap. We document reference blueprints that builders ship with OpenClaw. We catalog the patterns that make those blueprints composable. We curate the stack that powers them. And we publish field notes from builders in the trenches.
             </p>
             <p>
               No hype. No theory. Tested architectures from people who ship.
@@ -70,17 +70,17 @@ export default function AboutPage() {
       <div className={styles.pillars}>
         <div className={styles.pillar}>
           <div className={styles.pillarNum}>01</div>
-          <h3 className={styles.pillarTitle}>Systems</h3>
+          <h3 className={styles.pillarTitle}>Blueprints</h3>
           <p className={styles.pillarDesc}>
-            Reference agent architectures. Production-ready systems with tested configs, tools, patterns, and trade-offs documented.
+            Reference agent architectures. Production-ready blueprints with tested configs, tools, patterns, and trade-offs documented.
           </p>
-          <Link href="/systems" className={styles.pillarLink}>Browse systems &rarr;</Link>
+          <Link href="/blueprints" className={styles.pillarLink}>Browse blueprints &rarr;</Link>
         </div>
         <div className={styles.pillar}>
           <div className={styles.pillarNum}>02</div>
           <h3 className={styles.pillarTitle}>Patterns</h3>
           <p className={styles.pillarDesc}>
-            Reusable architecture building blocks. Event-driven, human-in-the-loop, multi-tool pipelines &mdash; the composable pieces behind every system.
+            Reusable architecture building blocks. Event-driven, human-in-the-loop, multi-tool pipelines &mdash; the composable pieces behind every blueprint.
           </p>
           <Link href="/patterns" className={styles.pillarLink}>Browse patterns &rarr;</Link>
         </div>
@@ -88,7 +88,7 @@ export default function AboutPage() {
           <div className={styles.pillarNum}>03</div>
           <h3 className={styles.pillarTitle}>Stack</h3>
           <p className={styles.pillarDesc}>
-            MCP servers, integrations, and tooling that power OpenClaw systems. Install commands, compatibility, and real-world usage.
+            MCP servers, integrations, and tooling that power OpenClaw blueprints. Install commands, compatibility, and real-world usage.
           </p>
           <Link href="/stack" className={styles.pillarLink}>Browse stack &rarr;</Link>
         </div>
@@ -108,7 +108,7 @@ export default function AboutPage() {
           <h2 className={styles.sectionTitle}>THE MAKER</h2>
           <div className={styles.prose}>
             <p>
-              DailyClaw is built by <strong>Alin Postolache</strong> &mdash; a builder and AI architect based in Europe. After spending months building agent systems with OpenClaw, Alin realized the community needed a structured reference for architectures, patterns, and real use cases.
+              DailyClaw is built by <strong>Alin Postolache</strong> &mdash; a builder and AI architect based in Europe. After spending months building agent blueprints with OpenClaw, Alin realized the community needed a structured reference for architectures, patterns, and real use cases.
             </p>
             <p>
               Want to get in touch? <Link href="/#submit" className={styles.inlineLink}>Submit your setup</Link> or reach out on social.

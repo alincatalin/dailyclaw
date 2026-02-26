@@ -1,7 +1,7 @@
 import Link from "next/link";
-import styles from "./SystemCard.module.css";
+import styles from "./BlueprintCard.module.css";
 
-interface SystemCardProps {
+interface BlueprintCardProps {
   category: string;
   title: string;
   description: string;
@@ -12,11 +12,11 @@ interface SystemCardProps {
   tools?: string[];
 }
 
-export default function SystemCard({
+export default function BlueprintCard({
   category, title, description, slug, useCase, complexity, patterns, tools,
-}: SystemCardProps) {
+}: BlueprintCardProps) {
   return (
-    <Link href={`/systems/${slug}`} className={styles.card}>
+    <Link href={`/blueprints/${slug}`} className={styles.card}>
       <div className={styles.label}>{category}{complexity ? ` \u00B7 ${complexity}` : ""}</div>
       <h3 className={styles.title}>{title}</h3>
       <p className={styles.desc}>{useCase || description}</p>

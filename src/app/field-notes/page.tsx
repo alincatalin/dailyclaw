@@ -5,7 +5,7 @@ import styles from "./field-notes.module.css";
 
 export const metadata = {
   title: "Field Notes — DailyClaw",
-  description: "Builder deep-dives. How people use OpenClaw — their systems, automations, and the setups that work.",
+  description: "Builder deep-dives. How people use OpenClaw — their blueprints, automations, and the setups that work.",
 };
 
 export default function FieldNotesPage() {
