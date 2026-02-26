@@ -362,7 +362,23 @@
   margin-top: 8px;
   font-family: var(--font-mono), monospace;
   font-size: 10px;
-  color: var(--border);
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+.newsletterSuccess {
+  margin-top: 8px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+.newsletterError {
+  margin-top: 8px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  color: var(--accent2);
   letter-spacing: 0.05em;
 }
 

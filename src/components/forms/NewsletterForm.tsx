@@ -37,7 +37,7 @@ export default function NewsletterForm() {
     <div className={styles.newsletter}>
       <div className={styles.newsletterLeft}>
         <h2>STAY IN <em>the loop</em></h2>
-        <p>Systems, patterns, and stack updates. No spam.</p>
+        <p>New systems, MCP tools, and builder interviews — straight to your inbox every week.</p>
       </div>
       <div>
         <form className={styles.newsletterForm} onSubmit={handleSubmit}>
@@ -54,7 +54,7 @@ export default function NewsletterForm() {
             {status === "loading" ? "..." : "SUBSCRIBE"}
           </button>
         </form>
-        <div className={styles.newsletterNote}>
+        <div className={status === "success" ? styles.newsletterSuccess : status === "error" ? styles.newsletterError : styles.newsletterNote}>
           {status === "success" ? message : status === "error" ? message : "Free. Unsubscribe anytime."}
         </div>
       </div>

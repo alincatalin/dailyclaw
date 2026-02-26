@@ -37,7 +37,17 @@ export const metadata: Metadata = {
     template: "%s | DailyClaw",
   },
   description: "The systems library for people using OpenClaw to design, build, and ship agent architectures. Systems, patterns, stack, and field notes.",
+  keywords: ["OpenClaw", "AI agents", "Agent architecture", "MCP servers", "AI systems", "DailyClaw"],
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://dailyclaw.dev"),
+  icons: {
+    icon: [
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+    shortcut: "/favicon.ico",
+  },
+  manifest: "/site.webmanifest",
   openGraph: {
     title: "DailyClaw — The Systems Library for OpenClaw Builders",
     description: "Reference systems, architecture patterns, and the stack that powers OpenClaw builders. Field notes from people who ship.",
