@@ -1,0 +1,230 @@
+---
+title: "The OpenClaw Model Routing Cheatsheet"
+slug: "model-routing-cheatsheet"
+category: "Cost Optimization"
+subtitle: "Stop Burning Tokens on Tasks That Don't Need Them"
+date: "2026-02-27"
+author: "DailyClaw"
+readTime: "12 min"
+---
+
+## The Problem in Numbers
+
+Every OpenClaw interaction carries a hidden "context tax." Your system prompt alone (SOUL.md + AGENTS.md + MEMORY.md + tool definitions) consumes 3,000--14,000 input tokens before you even say "good morning." On Opus 4.6 at $5/M input tokens, that context prefix costs $0.015--$0.07 per turn. On Sonnet 4.5 at $3/M, it's $0.009--$0.04. On Haiku 4.5 at $1/M, it's $0.003--$0.014.
+
+Now multiply by heartbeats every 30 minutes, cron jobs firing throughout the day, and sub-agents spawning for parallel work. A typical power user making 200+ agent turns per day can spend $80--200/month on Opus 4.6 alone. The same workload on a routed setup lands at $25--60.
+
+> **Note on legacy pricing:** If you're still running on Opus 4/4.1 ($15/$75 per million tokens), you're paying 3x more for a less capable model. Opus 4.5 and 4.6 both cost $5/$25 --- a 67% reduction from the previous generation. Upgrade immediately.
+
+---
+
+## The Model Landscape (February 2026)
+
+Before routing, know what's available. Pricing is per million tokens (input/output).
+
+### Anthropic Claude
+
+| Model | Input / Output | Context | Notes |
+|---|---|---|---|
+| **Opus 4.6** | $5 / $25 | 1M (beta) | Flagship. 128K max output. Agent teams. Adaptive thinking. |
+| **Opus 4.5** | $5 / $25 | 200K | Previous flagship. Still excellent. Same price as 4.6. |
+| **Sonnet 4.5** | $3 / $15 | 1M | Best bang-for-buck. Production workhorse. |
+| **Haiku 4.5** | $1 / $5 | 200K | Fast, cheap. Great for classification and simple tasks. |
+
+### OpenAI GPT
+
+| Model | Input / Output | Context | Notes |
+|---|---|---|---|
+| **GPT-5.2** | $1.75 / $14 | 200K+ | Current flagship. Strong reasoning and coding. |
+| **GPT-5** | $1.25 / $10 | 400K | Excellent value. Reliable for agentic tasks. |
+| **GPT-4.1** | $2 / $8 | 1M | Long-context specialist. Good tool calling. |
+| **GPT-5 Mini** | $0.25 / $2 | N/A | Budget option. Solid for simple tasks. |
+| **GPT-5 Nano** | $0.05 / $0.40 | N/A | Ultra-cheap for trivial classification. |
+
+### Google Gemini
+
+| Model | Input / Output | Context | Notes |
+|---|---|---|---|
+| **Gemini 3 Pro** | $2 / $12 | 1M | Strong multimodal and reasoning. |
+| **Gemini 2.5 Pro** | $1.25 / $10 | 1M | Proven, stable. 2x pricing above 200K context. |
+| **Gemini 2.5 Flash** | $0.30 / $2.50 | 1M | Fast and cheap. Great for mid-tier routing. |
+| **Gemini 2.5 Flash-Lite** | $0.10 / $0.40 | 1M | Near-free. Useful for heartbeats. |
+
+### DeepSeek
+
+| Model | Input / Output | Context | Notes |
+|---|---|---|---|
+| **DeepSeek V3.2 (chat)** | $0.28 / $0.42 | 128K | Ridiculously cheap. Cache hits at $0.028/M. |
+| **DeepSeek V3.2 (reasoner)** | $0.28 / $0.42 | 128K | Thinking mode. Same pricing, higher output volume. |
+
+<TipBox>
+**GPT-4o is now a legacy model.** It still exists at $2.50/$10 per million tokens, but GPT-5 ($1.25/$10) is both cheaper on input and more capable. GPT-4o mini ($0.15/$0.60) has been superseded by GPT-5 Nano and GPT-5 Mini. If your config references GPT-4o, update it.
+</TipBox>
+
+---
+
+## The Three-Tier Routing Map
+
+Here's what the community has converged on after months of collective trial and error.
+
+### Tier 1 --- Haiku 4.5 / Gemini Flash-Lite / DeepSeek V3.2
+
+**Cost:** $1/$5 (Haiku) -- $0.10/$0.40 (Flash-Lite) -- $0.28/$0.42 (DeepSeek V3.2)
+
+**Use for:**
+
+- **Heartbeat checks** --- scanning inbox, checking calendar, monitoring for alerts. The agent is answering one question: "Is anything worth surfacing?" That's classification, not reasoning.
+- **Simple cron jobs** --- weather fetch, time-based reminders, "turn on the lights," basic notifications.
+- **File operations** --- reading, listing, simple lookups.
+- **Smart home commands** --- toggle devices, check sensor status, routine automations.
+- **Message relay** --- forwarding, basic reformatting, simple acknowledgements.
+
+**Why it works here:** These tasks have a narrow decision space. The agent isn't reasoning through ambiguity --- it's pattern-matching against a small set of known outcomes. Haiku handles this identically to Opus.
+
+**DeepSeek V3.2 as the budget king:** At $0.28/$0.42 per million tokens (and $0.028 on cache hits), DeepSeek is roughly 3.5x cheaper than Haiku on input and 12x cheaper on output. For heartbeats hitting every 30 minutes, this adds up. Community reports are mixed on tool-calling reliability vs. Haiku, but for simple classification tasks it's a serious cost saver.
+
+**What breaks:** If your heartbeat checklist requires synthesizing across multiple data sources with judgment calls ("should I escalate this email given what I know about this project?"), Haiku will sometimes miss nuance. Bump to Sonnet.
+
+### Tier 2 --- Sonnet 4.5 (Your Daily Driver)
+
+**Cost:** $3/$15 per million tokens
+
+**Use for:**
+
+- **Conversational interactions** --- the vast majority of your back-and-forth with the agent.
+- **Email drafting and triage** --- composing replies, summarizing threads, prioritizing inbox.
+- **Calendar management** --- scheduling, conflict resolution, meeting prep.
+- **Code generation** --- writing scripts, single-file changes, skill creation.
+- **Content creation** --- drafts, summaries, translations, research digests.
+- **Morning briefings** --- aggregating weather, calendar, tasks, and news into a coherent daily summary.
+- **Web browsing and research** --- searching, extracting, and summarizing web content.
+- **Cron jobs requiring judgment** --- daily digests, weekly reviews, content aggregation that needs editorial sensibility.
+
+**Why it works here:** Sonnet covers 80--90% of what OpenClaw users do daily. Community reports consistently show "almost no difference in user experience" after switching from Opus for these tasks. One user documented a 65% cost reduction with no perceptible quality drop. The 1M context window on Sonnet 4.5 is a big advantage for research and long-document tasks.
+
+**What breaks:** Multi-step reasoning chains across 5+ tool calls where the agent needs to maintain a complex mental model. Debugging that requires understanding a full dependency graph. Tasks where a wrong answer has real consequences (sending money, deleting data, client-facing communications in sensitive contexts).
+
+**Cross-provider alternatives at this tier:** GPT-5 ($1.25/$10) and Gemini 2.5 Pro ($1.25/$10) are both cheaper than Sonnet on paper, and both have strong reasoning capabilities. For OpenClaw specifically, community consensus is that Sonnet still outperforms on agent-specific tasks --- particularly tool-calling reliability and instruction following. But GPT-5 has closed the gap significantly and is a strong cross-provider fallback or primary if cost is the priority.
+
+### Tier 3 --- Opus 4.6 (The Escalation Path)
+
+**Cost:** $5/$25 per million tokens
+
+**Use for:**
+
+- **Complex multi-step automations** --- workflows that chain 5+ tool calls with conditional logic.
+- **Architecture decisions** --- "should I restructure this?" type questions where context and nuance matter.
+- **Debugging sessions** --- particularly when Sonnet starts suggesting circular fixes.
+- **Sensitive operations** --- anything involving money, client data, or actions that can't be easily undone.
+- **Deep analysis** --- weekly codebase reviews, strategic planning, document analysis requiring synthesis across long contexts.
+- **Personal/emotional conversations** --- if you use your agent as a thinking partner, Opus handles nuance better.
+- **Novel problem-solving** --- tasks the agent hasn't seen templated before.
+
+**Why it's worth it here:** Opus 4.6 has measurably stronger prompt-injection resistance (critical when processing untrusted emails and web content), better long-context coherence, superior multi-step reasoning, and the new 1M context window (beta) with 128K max output tokens. The creator of OpenClaw, Peter Steinberger, explicitly recommends it for these reasons.
+
+**The Opus pricing win:** At $5/$25, Opus 4.6 is cheaper than GPT-5.2 ($1.75/$14) on input but more expensive on output. For tasks where you need top-tier reasoning and output is modest, the total cost difference is smaller than it looks.
+
+---
+
+## The Configuration
+
+OpenClaw supports model overrides at multiple levels. Here's the practical setup.
+
+**Default model in openclaw.json:** Set Sonnet 4.5 as your primary. This handles most interactions automatically.
+
+```json
+{
+  "model": "anthropic/claude-sonnet-4-5"
+}
+```
+
+**Heartbeat model:** Override to Haiku (or DeepSeek for maximum savings). Heartbeats are the single biggest waste of tokens for most users.
+
+**Per-cron model overrides:** Use `--model` flags on cron jobs. Weather check -> Haiku. Weekly deep review -> Opus with thinking enabled.
+
+**Manual switching:** Use `/model opus` before a complex task, `/model sonnet` (or `/model ds`) after. This takes two seconds and can save dollars per session.
+
+**Multi-agent routing:** For advanced setups, run separate agents --- a Sonnet "everyday" agent on WhatsApp and an Opus "deep work" agent on Telegram. OpenClaw's binding system makes this straightforward:
+
+```json
+{
+  "agents": {
+    "list": [
+      { "id": "chat", "name": "Everyday", "model": "anthropic/claude-sonnet-4-5" },
+      { "id": "opus", "name": "Deep Work", "model": "anthropic/claude-opus-4-6" }
+    ]
+  },
+  "bindings": [
+    { "agentId": "chat", "match": { "channel": "whatsapp" } },
+    { "agentId": "opus", "match": { "channel": "telegram" } }
+  ]
+}
+```
+
+---
+
+## The Fallback Chain
+
+Don't just pick one model --- configure fallbacks. If Anthropic is rate-limited, all Claude models may be slow simultaneously. A smart fallback chain crosses providers:
+
+1. **Primary:** Sonnet 4.5 ($3/$15)
+2. **First fallback:** GPT-5 ($1.25/$10) --- different provider = independent rate limits, strong capabilities
+3. **Second fallback:** Gemini 2.5 Flash ($0.30/$2.50) --- cheap, fast, 1M context
+4. **Third fallback:** Haiku 4.5 ($1/$5) --- same provider as primary but cheaper, may still be available
+
+---
+
+## What About Non-Anthropic Models as Primary?
+
+**GPT-5 / GPT-5.2** --- GPT-5 at $1.25/$10 is the cheapest frontier model available right now, undercutting both Sonnet and Gemini 2.5 Pro on input. GPT-5.2 ($1.75/$14) is OpenAI's current flagship. For OpenClaw specifically, community consensus is that Sonnet still outperforms on agent-specific tasks --- particularly tool-calling reliability and long-context handling. But GPT-5 is a very reasonable Tier 2 alternative, and the price gap makes it attractive as a primary for cost-sensitive setups.
+
+**Gemini 2.5 Pro** --- At $1.25/$10 with a 1M context window, Gemini matches GPT-5 on price and exceeds everyone on context length. The trade-off: some developers report less consistent output quality for agentic tool-calling workflows. Works well as a research/analysis agent where context length matters more than action reliability.
+
+**Gemini 2.5 Flash** --- At $0.30/$2.50, this sits between Haiku and Sonnet in both price and capability. A strong option for Tier 1.5 tasks that are too nuanced for Haiku but don't need Sonnet's full capability. The 1M context window is a bonus.
+
+**DeepSeek V3.2** --- The cheapest usable model at $0.28/$0.42. Tool-calling support is available but less battle-tested in OpenClaw compared to Claude models. Best used for heartbeats, simple cron jobs, and as an ultra-cheap Tier 1 option. Be aware of potential availability/latency issues depending on provider.
+
+---
+
+## Cost Optimization Techniques
+
+Beyond model routing, these techniques stack:
+
+**Prompt caching (Anthropic):** Cache your system prompt (SOUL.md + tool definitions). Cache reads cost just 10% of base input price. For a 10K-token system prompt hitting 200 times/day on Sonnet, that's a drop from $6/day to $0.60/day.
+
+**Batch API:** Both Anthropic and OpenAI offer 50% off for non-real-time workloads. If your cron jobs don't need instant results, batch them. Sonnet drops to $1.50/$7.50. Opus drops to $2.50/$12.50.
+
+**Extended thinking budgets:** Start with the minimum budget (1,024 tokens) and increase only when needed. Thinking tokens are billed as output tokens --- on Opus at $25/M output, an unnecessarily large thinking budget burns money fast.
+
+---
+
+## Quick-Reference Decision Matrix
+
+**"Should I use Opus for this?"**
+Ask yourself: Would I trust an experienced junior to handle this? If yes -> Sonnet. If it requires senior judgment -> Opus.
+
+**"Can I drop this to Haiku (or cheaper)?"**
+Ask yourself: Is the answer essentially binary (yes/no, on/off, alert/no-alert)? If yes -> Haiku or DeepSeek.
+
+**"Is this worth optimizing?"**
+Count how many times per day this task fires. A cron job running 96 times daily on Opus at $5/$25 costs roughly $2--5/day in context overhead. The same job on Haiku costs $0.40--1/day. On DeepSeek V3.2, it's under $0.15/day.
+
+**"Should I use GPT-5 instead of Sonnet?"**
+If cost is your primary constraint and you've tested your workflows, GPT-5 at $1.25/$10 is ~60% cheaper on input than Sonnet. Test your specific tool-calling patterns before switching.
+
+---
+
+## Summary: The Routing Stack at a Glance
+
+| Task Category | Recommended Model | Cost (Input/Output per MTok) |
+|---|---|---|
+| Heartbeats, sensors, binary checks | DeepSeek V3.2 or Haiku 4.5 | $0.28/$0.42 or $1/$5 |
+| Simple cron jobs, notifications | Haiku 4.5 or Gemini Flash-Lite | $1/$5 or $0.10/$0.40 |
+| Conversation, email, calendar | Sonnet 4.5 | $3/$15 |
+| Code gen, research, briefings | Sonnet 4.5 (or GPT-5 for savings) | $3/$15 (or $1.25/$10) |
+| Complex automation, debugging | Opus 4.6 | $5/$25 |
+| Sensitive ops, deep analysis | Opus 4.6 with thinking | $5/$25 + thinking tokens |
+
+---
+
+*This pattern is part of the DailyClaw Patterns library. Tested configs, real results. Pricing verified against official sources as of February 27, 2026.*

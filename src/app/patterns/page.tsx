@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getBlueprints } from "@/lib/content";
+import { getBlueprints, getPatterns } from "@/lib/content";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import styles from "./patterns.module.css";
 
@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 export default function PatternsPage() {
   const blueprints = getBlueprints();
   const allPatterns = Array.from(new Set(blueprints.flatMap((b) => b.patterns || [])));
+  const patterns = getPatterns();
 
   return (
     <>
@@ -35,6 +36,23 @@ export default function PatternsPage() {
           </p>
         </div>
 
+        {/* Published patterns */}
+        {patterns.length > 0 && (
+          <div className={styles.patternCards}>
+            {patterns.map((pattern) => (
+              <Link key={pattern.slug} href={`/patterns/${pattern.slug}`} className={styles.patternCard}>
+                <div className={styles.patternCardCategory}>{pattern.category}</div>
+                <div className={styles.patternCardTitle}>{pattern.title}</div>
+                <div className={styles.patternCardSubtitle}>{pattern.subtitle}</div>
+                <div className={styles.patternCardMeta}>
+                  <span>{pattern.readTime} read</span>
+                  <span>{pattern.date}</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+
         <div className={styles.pillGrid}>
           {allPatterns.length > 0 ? (
             allPatterns.map((pattern) => (
@@ -54,7 +72,7 @@ export default function PatternsPage() {
         </div>
 
         <div className={styles.comingSoon}>
-          <div className={styles.comingSoonLabel}>Coming soon</div>
+          <div className={styles.comingSoonLabel}>More patterns coming</div>
           <p>
             Full pattern documentation with diagrams, trade-offs, and example blueprints. Each pattern will link to the blueprints that implement it.
           </p>

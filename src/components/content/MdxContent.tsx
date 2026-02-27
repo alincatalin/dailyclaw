@@ -1,4 +1,5 @@
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import CodeBlock from "./CodeBlock";
 import QABlock from "./QABlock";
 import PullQuote from "./PullQuote";
@@ -37,7 +38,7 @@ const components = {
 export default function MdxContent({ source }: { source: string }) {
   return (
     <div className={styles.prose}>
-      <MDXRemote source={source} components={components} />
+      <MDXRemote source={source} components={components} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
     </div>
   );
 }

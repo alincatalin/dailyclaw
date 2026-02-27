@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import { Blueprint, FieldNote, StackItem } from "./types";
+import { Blueprint, FieldNote, Pattern, StackItem } from "./types";
 
 const contentDir = path.join(process.cwd(), "content");
 
@@ -33,6 +33,14 @@ export function getFieldNotes(): FieldNote[] {
 
 export function getFieldNote(slug: string): FieldNote | undefined {
   return getFieldNotes().find((f) => f.slug === slug);
+}
+
+export function getPatterns(): Pattern[] {
+  return readMdxFiles("patterns") as Pattern[];
+}
+
+export function getPattern(slug: string): Pattern | undefined {
+  return getPatterns().find((p) => p.slug === slug);
 }
 
 export function getStackItems(): StackItem[] {

@@ -92,3 +92,62 @@
   border-top: 1px solid var(--border);
   margin: 2rem 0;
 }
+
+/* Tables */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+}
+
+.prose thead {
+  border-bottom: 2px solid var(--accent);
+}
+
+.prose th {
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.prose td {
+  padding: 8px 12px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  line-height: 1.6;
+  vertical-align: top;
+}
+
+.prose td strong {
+  color: var(--text);
+}
+
+.prose tr:hover td {
+  background: var(--surface);
+}
+
+.prose tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Code blocks (fenced) */
+.prose pre {
+  background: #080808;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent3);
+  padding: 1.25rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--text);
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}

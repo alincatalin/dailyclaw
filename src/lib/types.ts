@@ -74,5 +74,16 @@ export interface Blueprint {
   content: string;
 }
 
+export interface Pattern {
+  title: string;
+  slug: string;
+  category: string;
+  subtitle: string;
+  date: string;
+  author: string;
+  readTime: string;
+  content: string;
+}
+
 export type FieldNote = Interview;
 export type StackItem = Tool;
