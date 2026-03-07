@@ -1,34 +1,64 @@
-import { getFieldNotes, getStackItems, getBlueprints } from "@/lib/content";
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
+import {
+  getBlueprints,
+  getFieldNotes,
+  getPatterns,
+  getStackItems,
+} from "@/lib/content";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dailyclaw.dev";
 
-  const blueprints = getBlueprints().map((b) => ({
-    url: `${baseUrl}/blueprints/${b.slug}`,
+  const staticRoutePaths = [
+    "",
+    "/about",
+    "/advertise",
+    "/blueprints",
+    "/field-notes",
+    "/patterns",
+    "/stack",
+  ];
+
+  const staticRoutes: MetadataRoute.Sitemap = staticRoutePaths.map((route) => ({
+    url: `${baseUrl}${route}`,
     lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: route === "" ? 1 : 0.8,
   }));
 
-  const stackItems = getStackItems().map((t) => ({
-    url: `${baseUrl}/stack/${t.slug}`,
+  const blueprints: MetadataRoute.Sitemap = getBlueprints().map((item) => ({
+    url: `${baseUrl}/blueprints/${item.slug}`,
     lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.6,
   }));
 
-  const fieldNotes = getFieldNotes().map((f) => ({
-    url: `${baseUrl}/field-notes/${f.slug}`,
+  const fieldNotes: MetadataRoute.Sitemap = getFieldNotes().map((item) => ({
+    url: `${baseUrl}/field-notes/${item.slug}`,
     lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
+  const patterns: MetadataRoute.Sitemap = getPatterns().map((item) => ({
+    url: `${baseUrl}/patterns/${item.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
+  const stackItems: MetadataRoute.Sitemap = getStackItems().map((item) => ({
+    url: `${baseUrl}/stack/${item.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.6,
   }));
 
   return [
-    { url: baseUrl, lastModified: new Date() },
-    { url: `${baseUrl}/blueprints`, lastModified: new Date() },
-    { url: `${baseUrl}/patterns`, lastModified: new Date() },
-    { url: `${baseUrl}/stack`, lastModified: new Date() },
-    { url: `${baseUrl}/field-notes`, lastModified: new Date() },
-    { url: `${baseUrl}/about`, lastModified: new Date() },
-    { url: `${baseUrl}/advertise`, lastModified: new Date() },
+    ...staticRoutes,
     ...blueprints,
-    ...stackItems,
     ...fieldNotes,
+    ...patterns,
+    ...stackItems,
   ];
 }
