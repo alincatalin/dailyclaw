@@ -28,7 +28,7 @@ export function getBlueprint(slug: string): Blueprint | undefined {
 }
 
 export function getFieldNotes(): FieldNote[] {
-  return readMdxFiles("field-notes") as FieldNote[];
+  return (readMdxFiles("field-notes") as FieldNote[]).sort((a, b) => b.number - a.number);
 }
 
 export function getFieldNote(slug: string): FieldNote | undefined {

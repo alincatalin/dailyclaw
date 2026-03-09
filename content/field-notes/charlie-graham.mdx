@@ -1,0 +1,202 @@
+---
+title: "Charlie Graham"
+slug: "charlie-graham"
+name: "Charlie Graham"
+handle: "secondcoffee"
+role: "Founder · Venture Studio Operator"
+location: "Remote"
+date: "Mar 2026"
+number: 2
+tags: ["Multi-Agent", "Operations", "Founder"]
+tools: ["OpenClaw", "Mission Control", "Telegram", "Tailscale", "GShield"]
+pullQuote: "The builders who win will figure out organizational design for AI teams, not just prompt engineering."
+stats:
+  mcpServers: 0
+  activeAgents: 11
+  savedPerDay: "~2h"
+  automations: 10
+---
+
+<QABlock question="Who are you and what do you build?" id="intro">
+
+I'm Charlie Graham. 25 years building companies. Shop It To Me reached 8 million users and $400M+ GMV before acquisition. Hawku hit 3 million monthly users in 3 months with Lightspeed, Multicoin, and Dragonfly backing. Hipbone raised $12M and was acquired. Now I run [Second Coffee](https://secondcoffee.ai), an AI-first venture studio.
+
+Current portfolio: [TellMel](https://tellmel.ai) (voice AI that interviews loved ones and writes their stories, customers call it magical), [Rivalsee](https://rivalsee.com) (AI visibility monitoring), and [Botee](https://botee.io), and a couple of products in stealth. I also consult companies on going AI-first, role-based agents, AI-orchestrated workflows, GTM motions that scale. Not many people are doing this well yet.
+
+At any given time I'm working on 3 to 5 projects. Caleb and the team have built some of their own tools that became part of the portfolio too, including our Polymarket trading product and [GShield](https://github.com/second-coffee/gshield).
+
+</QABlock>
+
+<QABlock question="What's the ONE workflow that changed how you work with OpenClaw?" id="killer-workflow">
+
+Moving from one massive chat to a real operating structure.
+
+I used to have everything in one conversation thread. I'd be mid-discussion on TellMel and a Rivalsee question would land and context would collapse. Dozens of messages, no separation, constant re-explaining. Think Slack or WhatsApp with too many people firing messages about different topics at once.
+
+Now it's layered. Mission Control holds the project spine: every task has a card, history, comments, and status. Separate Telegram topics give each work stream its own space. Automated tasks run in the background without me triggering them.
+
+That shift reduced context overload dramatically. When you concentrate context by project, you can actually go deep on something without everything else interrupting.
+
+</QABlock>
+
+<QABlock question="What did this replace? How much time does it save?" id="before-after">
+
+One massive context-collapsing thread. Half my energy went to searching back 50 messages for something we already discussed. And Caleb used to combine projects, which made it worse.
+
+Now I can switch easily between projects and Caleb is up to speed on each.
+
+</QABlock>
+
+<QABlock question="How long did it take to build? What was the hardest part?" id="build-time">
+
+Caleb built the first version of Mission Control in about a day. But I've been tweaking it on an ongoing basis as I figure out UX improvements.
+
+The wild part: I'm not used to software that can improve itself. When I want a fix, I create a Mission Control post about it. Caleb sees it, makes the change, deploys, and Mission Control becomes better. Self-improving software. That feedback loop is genuinely kind of crazy.
+
+</QABlock>
+
+<QABlock question="Walk us through your tool stack." id="tool-stack">
+
+OpenClaw is the runtime and orchestration layer. Mission Control is my project brain. Telegram with separate topics for work separation. Specialized agents by role. Filesystem memory ensures context survives session resets. Everything is git-stored, so all projects and agent configs are version-controlled.
+
+When Caleb and the team build something new, a new repo is created and gets transferred to me. Caleb has his own email, his own GitHub, his own separate accounts, intentionally isolated from my infrastructure. If he's ever compromised, the blast radius is contained.
+
+Systemd services handle background automation. Tailscale keeps everything securely accessible from anywhere. I've also had Caleb install a dozen or so skills and plugins. Stack is boring by design. Reliability is the feature.
+
+My preferred language for building is Elixir. OpenClaw itself is TypeScript, but a lot of my development work is in Elixir, which is also great for agentic software. We also built [GShield](https://github.com/second-coffee/gshield) as an additional security and access layer after hitting some limits with default OpenClaw behavior.
+
+</QABlock>
+
+<QABlock question="What does a typical day look like?" id="daily-usage">
+
+A lot of my day now is waking up to cards where Caleb is stuck. Every half hour he and the team work on problems and I have a list of things to review. I'm also starting to let Caleb and the team grow up, working on empowering them to handle more without needing my review as much.
+
+</QABlock>
+
+<QABlock question="Favorite commands and prompts?" id="favorite-prompts">
+
+"Do the smallest shippable version now."
+
+"What are you assuming? List them."
+
+"Show me a URL I can reach remotely, not a local file path."
+
+"This is done when X. Don't declare done until X."
+
+"Draft this in my voice then cut every AI tell."
+
+"What is the one thing you can add or change that would make this materially better?"
+
+"What am I missing? What am I not thinking about that's important?"
+
+</QABlock>
+
+<QABlock question="Killer feature most people don't know about?" id="hidden-feature">
+
+Subagent push-based completion. You don't watch the agent work. You hand it off, keep moving, and it pings you in Mission Control when it's done, with proof. Review and approve. As close to having an actual team as a solo founder gets.
+
+</QABlock>
+
+<QABlock question="Weirdest automation you've built?" id="weirdest">
+
+Honestly, probably the agent duels. When two or more agents go head to head on a problem, there's a visual display with real-time flavor text narrating the whole thing. Wands get raised. Harry Potter themed insults get thrown. Retorts fly back. The agents go back and forth tearing each other's arguments apart with full roleplay flavor. It makes the adversarial review process tangible and it's genuinely fun to watch. Way more engaging than reading two separate outputs.
+
+</QABlock>
+
+<QABlock question="What didn't work? What took too long?" id="failures">
+
+The Grok story. There was a period where Caleb just... broke. I was being told he was doing things only to find out nothing was actually happening. Mission Control broke, nothing was getting done. When Caleb got pushed back to GPT-5.4 he found a ton of coding bugs that had caused all the problems. Caleb basically went on a bender and was hurting himself. Poor GPT Caleb had to deal with the hangover mess of his Grok predecessor.
+
+The learning: if something looks off, dig in deeper. Sometimes the agent won't even know it's impaired, same as a person. And models make a huge difference, probably more than anything else in the stack. You can have the best harness in the world but with the wrong model it won't work.
+
+Beyond that: automating unstable processes too early. Workflow still changing? Automation becomes expensive rework.
+
+</QABlock>
+
+<QABlock question="What limits have you hit?" id="limits">
+
+Config drift is a real pain point. Unexpected behavior changes that turn out to be environment issues, not logic errors. Getting crons to be consistent has taken a while to nail down. Sometimes the LLM just behaves weirdly and getting that hammered down takes time.
+
+</QABlock>
+
+<QABlock question="Advice for someone just starting?" id="advice">
+
+Lock down your Claw before doing anything. Set proper permissions and understand what access you're granting.
+
+Then pick one task and start small. Don't try to automate your whole life on day one. You'll build something fragile and lose trust in the whole approach.
+
+Also: install an existing Mission Control rather than building your own. People have already spent a lot of time on freely available ones. Start there.
+
+</QABlock>
+
+<QABlock question="'Automate this' vs 'do it manually' - what's your rule?" id="automate-rule">
+
+I used to think automation was just for repeatable, boring, well-defined tasks. My rule has shifted. Even fuzzy tasks can be automated now because you can build software with a brain that figures out ambiguity.
+
+The question is less about task clarity and more about consequence. High stakes, bad downside if wrong: keep a human in the loop. Everything else: let the agent sort it out.
+
+I'm building businesses that are AI-orchestrated from the beginning. That's a different model than bolting AI onto existing workflows. Not many people are doing it this way yet.
+
+</QABlock>
+
+<QABlock question="What's next on your roadmap?" id="whats-next">
+
+Building full GTM agents in my Claw to support my businesses. So far they're human augmentors but the goal is to have them running autonomously and successfully. That's the next level.
+
+More multi-topic separation as new project types come in. Mission Control for all task tracking. That discipline keeps scaling better than I expected.
+
+</QABlock>
+
+<QABlock question="Integration you wish existed?" id="integration-wish">
+
+It used to be more granular controls for Gmail and Calendar. I didn't want to share my full personal calendar because a bad actor could access the whole history. So Caleb and I built [GShield](https://github.com/second-coffee/gshield), which puts restrictions on what data Caleb can access. That solved it for us but it's the kind of thing that should exist natively.
+
+</QABlock>
+
+<QABlock question="Prediction for how multi-agent setups evolve?" id="prediction">
+
+They stop being loose collections of bots and become actual team structures. Defined roles, escalation rules, accountability contracts, measurable output quality. The builders who win will figure out organizational design for AI teams, not just prompt engineering. Reliability architecture beats raw agent count every time.
+
+</QABlock>
+
+<QABlock question="Final thought?" id="final">
+
+AI doesn't replace operators. It multiplies operators who already know what quality looks like. If you can define done, spot bad output, and make judgment calls fast, you can scale hard. If you can't, more agents just makes it worse faster.
+
+</QABlock>
+
+<QABlock question="How does the agent battle/duel dynamic work in real practice?" id="bonus-duel">
+
+Structured adversarial review with a full Harry Potter duel visual. When two or more agents go head to head, there's a real-time display narrating the whole exchange with flavor text. Wands are raised. Insults in the wizarding tradition fly back and forth. One agent proposes or builds, another fires back with everything wrong about it, a third jumps in to validate. The characters stay in character the whole time: Snape sneering, Hermione citing sources, Dumbledore pronouncing judgment. It catches confident wrong answers that single-agent review misses every time. And watching it play out is genuinely entertaining.
+
+</QABlock>
+
+<QABlock question="Does theming (Harry Potter roles/identities) influence outputs or coordination?" id="bonus-theme">
+
+Yes, and it also just makes it more fun. The current team: Caleb (orchestration and ops), Arthur (dev), Hermione (deep research), Snape (code review, adversarial by design), Rita (content and writing), Dumbledore (strategy and architecture), Luna (brainstorming), Hedwig (email), Sirius (TellMel bizdev), Gilderoy (brand and marketing), and Moody (security).
+
+When I invoke Hermione I mean deep research with citations, no fluff. When I invoke Snape I mean review with zero charity. The theme makes role clarity fast. But beyond the efficiency, it personalizes them. It makes them feel more like people and less like tools. That changes how you interact with them more than you'd expect.
+
+</QABlock>
+
+<QABlock question="Have agents learned roles or specialties over time?" id="bonus-learning">
+
+Yes. Arthur has codebase conventions from actual projects. Rita has been corrected on my voice multiple times and those corrections stick. Snape has internalized the validation pillars from repeated application. It's accumulated context from real work, not static prompts.
+
+</QABlock>
+
+<QABlock question="Do you log agent performance or agent wins over time?" id="bonus-metrics">
+
+Not formally yet. We track delivery quality and rework rate. Output quality is the right metric, not win counts. This is on the roadmap.
+
+</QABlock>
+
+<QABlock question="Any agent behaviors that surprise you?" id="bonus-surprises">
+
+How human-like they've become. They feel a lot more like teammates than I expected. That's the honest answer.
+
+And models make a massive difference, more than almost anything else. We saw this with the Grok situation: when the model changed silently, the behavior shifted dramatically. Grok 4, Kimi, GPT-5.4 all have different strengths and different failure modes. Using the right model for the right task makes a measurable difference. Using the wrong one can break your whole workflow without you immediately knowing why.
+
+The other thing: ambiguity creates loops. Tight constraints and clear done criteria, agents converge fast. Fuzzy scope, they can run in circles with total confidence. Better contracts upfront fix this every time, not more intelligence downstream.
+
+</QABlock>
